@@ -1,2 +1,2 @@
 # web3-templates
-Web Templates
+Web Templates for research and testing purposes 

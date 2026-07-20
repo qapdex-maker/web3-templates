@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Azure AI Studio - Stitch SDK</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f9f9f9",
+                    "surface-variant": "#e2e2e2",
+                    "primary-fixed": "#e4e2e1",
+                    "border-subtle": "#E0E0E0",
+                    "surface-bright": "#f9f9f9",
+                    "tertiary": "#14003b",
+                    "inverse-primary": "#c8c6c5",
+                    "on-surface": "#1a1c1c",
+                    "text-primary": "#242424",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#6c47ba",
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-primary-fixed": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#c4c7c7",
+                    "tertiary-container": "#2d0071",
+                    "surface-dim": "#dadada",
+                    "outline": "#747878",
+                    "on-surface-variant": "#444748",
+                    "tertiary-fixed": "#e9ddff",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-tertiary-fixed": "#23005c",
+                    "on-primary": "#ffffff",
+                    "on-background": "#1a1c1c",
+                    "on-tertiary-fixed-variant": "#5513c0",
+                    "surface-white": "#FFFFFF",
+                    "on-secondary-fixed": "#24005b",
+                    "on-secondary-fixed-variant": "#532ca1",
+                    "on-secondary-container": "#41138e",
+                    "surface": "#f9f9f9",
+                    "secondary-fixed": "#eaddff",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "secondary-container": "#ad89ff",
+                    "on-primary-container": "#8c8b8b",
+                    "azure-blue": "#0078D4",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f3f3f3",
+                    "surface-container-high": "#e8e8e8",
+                    "text-secondary": "#616161",
+                    "surface-container": "#eeeeee",
+                    "primary-container": "#242424",
+                    "inverse-surface": "#2f3131",
+                    "on-primary-fixed-variant": "#474746",
+                    "on-tertiary-container": "#9b70ff",
+                    "primary": "#0e0f0f",
+                    "tertiary-fixed-dim": "#d0bcff",
+                    "surface-tint": "#5f5e5e",
+                    "secondary-fixed-dim": "#d1bcff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "container-max": "1440px",
+                    "base": "4px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "code-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-md-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .card-shadow { box-shadow: 0px 2px 4px rgba(0,0,0,0.04); }
+        .glass-effect { backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.8); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full dark:bg-surface-container-high flex items-center justify-between px-md h-16 w-full z-50 border-b border-outline-variant bg-surface-container-lowest">
+<div class="flex items-center gap-md">
+<button class="hover:bg-surface-variant transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold text-on-surface">Azure</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="hover:bg-surface-variant transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined text-primary">search</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-azure-blue flex items-center justify-center text-white text-[10px] font-bold">AU</div>
+</div>
+</header>
+<main class="mt-16 px-md py-lg space-y-lg">
+<!-- Welcome Hero with Animated Shader -->
+<section class="relative h-48 rounded-xl overflow-hidden flex flex-col justify-end p-lg">
+<div class="relative z-10 space-y-xs">
+<span class="text-white/80 font-label-md text-label-md">Studio Overview</span>
+<h2 class="text-white font-headline-lg-mobile text-headline-lg-mobile">Project: Phoenix-AI</h2>
+</div>
+</section>
+<!-- Assistant Status: NatureLM-Idun -->
+<div class="bg-surface-container-lowest border border-border-subtle rounded-xl p-md card-shadow flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="relative">
+<div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-surface-white rounded-full"></div>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-text-primary leading-tight">NatureLM-Idun-5-MoE</h3>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-block w-2 h-2 rounded-full bg-azure-blue"></span>
+<p class="font-label-md text-label-md text-azure-blue font-bold">Stitch SDK is generating the requested telemetry component... Extraction in progress.</p>
+</div>
+</div>
+</div>
+<button class="text-on-surface-variant p-2 hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined">settings_input_component</span>
+</button>
+</div>
+<!-- Stitch SDK Card (Primary focus) -->
+<div class="bg-surface-container-lowest border-2 border-azure-blue/20 rounded-xl overflow-hidden card-shadow">
+<div class="bg-azure-blue/5 px-md py-sm border-b border-azure-blue/10 flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-azure-blue text-[18px]">hub</span>
+<span class="font-label-md text-label-md text-azure-blue uppercase tracking-wider">Stitch SDK</span>
+</div>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-label-md text-[10px] font-bold">CONNECTED</span>
+</div>
+<div class="p-lg space-y-md">
+<div class="flex flex-col gap-xs">
+<span class="text-text-secondary font-label-md text-label-md">Active Session ID</span>
+<div class="bg-surface-container rounded p-sm flex items-center justify-between font-code-sm text-code-sm border border-outline-variant">
+<span class="truncate">az-sdk-8921-prod-v2</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer">content_copy</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="p-sm bg-surface-container-low rounded border border-border-subtle">
+<p class="text-text-secondary font-label-md text-[10px] uppercase">Latency</p>
+<p class="font-title-md text-title-md">14ms</p>
+</div>
+<div class="p-sm bg-surface-container-low rounded border border-border-subtle">
+<p class="text-text-secondary font-label-md text-[10px] uppercase">Heartbeat</p>
+<p class="font-title-md text-title-md">Active</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-border-subtle rounded-lg p-sm mb-md">
+<p class="text-text-secondary font-label-md text-[10px] uppercase mb-xs">Active Prompt</p>
+<p class="text-body-md text-on-surface italic">"Generate a high-density telemetry dashboard for Quantum Flux monitoring."</p>
+</div><button class="w-full bg-azure-blue text-white py-3 rounded-lg font-body-md text-body-md font-bold active:scale-95 transition-all shadow-lg shadow-azure-blue/20 flex items-center justify-center gap-sm" onclick="this.classList.add('opacity-50')"><span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+Generating...</button>
+</div>
+</div><div class="bg-primary-container rounded-xl p-md border border-azure-blue/30 shadow-lg">
+<div class="flex justify-between items-center mb-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-white font-label-md uppercase tracking-widest text-[10px]">Live Preview</span>
+</div>
+<span class="text-azure-blue font-code-sm text-[10px]">Quantum_Flux_v1.tsx</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-white/70 text-[10px] uppercase">Stability</p>
+<p class="text-white text-title-md font-bold">98.4%</p>
+</div>
+<div class="text-right">
+<p class="text-white/70 text-[10px] uppercase">Quantum Flux (μS)</p>
+<p class="text-green-500 text-title-md font-mono">1,240.2</p>
+</div>
+</div>
+<div class="h-16 flex items-end gap-1">
+<div class="flex-1 bg-azure-blue/20 h-1/2 rounded-t-sm"></div>
+<div class="flex-1 bg-azure-blue/40 h-3/4 rounded-t-sm"></div>
+<div class="flex-1 bg-azure-blue/60 h-2/3 rounded-t-sm"></div>
+<div class="flex-1 bg-azure-blue h-full rounded-t-sm"></div>
+<div class="flex-1 bg-azure-blue/80 h-5/6 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<!-- Secondary Modules Grid -->
+<div class="grid grid-cols-1 gap-md">
+<!-- CLI Module -->
+<div class="bg-primary-container text-white rounded-xl p-md flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-azure-blue">terminal</span>
+<h4 class="font-body-md text-body-md font-bold">Azure CLI</h4>
+</div>
+<span class="text-on-primary-container font-label-md text-label-md">v2.54.0</span>
+</div>
+<div class="bg-black/30 rounded p-sm font-mono text-[11px] text-white/70 leading-relaxed">
+                    $ az stitch sdk deploy --env production<br/>
+                    &gt; Deploying 14 modules...<br/>
+                    &gt; Success.
+                </div>
+</div>
+<!-- Maintenance Module -->
+<div class="bg-surface-container-lowest border border-border-subtle rounded-xl p-md card-shadow">
+<div class="flex items-center justify-between mb-sm">
+<h4 class="font-body-md text-body-md font-bold text-text-primary">Maintenance</h4>
+<span class="text-error font-label-md text-label-md">1 Warning</span>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-text-secondary text-[18px]">refresh</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Certificate Rotation</p>
+<p class="text-[11px] text-text-secondary">Expires in 12 days</p>
+</div>
+<button class="text-azure-blue font-label-md text-label-md">Fix</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Infrastructure Visual (Bento-style detail) -->
+<div class="grid grid-cols-2 gap-md h-40">
+<div class="bg-surface-white border border-border-subtle rounded-xl p-md flex flex-col justify-between overflow-hidden relative">
+<div class="relative z-10">
+<h5 class="text-[10px] uppercase font-bold text-text-secondary tracking-widest">Compute</h5>
+<p class="font-title-md text-title-md">West US 2</p>
+</div>
+<div class="absolute bottom-0 right-0 w-full h-1/2 opacity-10">
+</div>
+</div>
+<div class="bg-surface-white border border-border-subtle rounded-xl p-md flex flex-col justify-between">
+<div>
+<h5 class="text-[10px] uppercase font-bold text-text-secondary tracking-widest">Environment</h5>
+<div class="flex items-center gap-xs mt-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<p class="font-body-md text-body-md">Production</p>
+</div>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4"></div>
+</div>
+</div>
+</div>
+<!-- Quick Resources -->
+<div class="space-y-sm">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase ml-1">Connected Resources</h4>
+<div class="flex gap-md overflow-x-auto no-scrollbar pb-2">
+<div class="flex-shrink-0 w-32 h-24 bg-surface-container-lowest border border-border-subtle rounded-lg p-sm flex flex-col justify-between">
+<span class="material-symbols-outlined text-azure-blue">database</span>
+<span class="font-label-md text-[11px] truncate">SQL_Store_Alpha</span>
+</div>
+<div class="flex-shrink-0 w-32 h-24 bg-surface-container-lowest border border-border-subtle rounded-lg p-sm flex flex-col justify-between">
+<span class="material-symbols-outlined text-azure-blue">lock</span>
+<span class="font-label-md text-[11px] truncate">KeyVault_Main</span>
+</div>
+<div class="flex-shrink-0 w-32 h-24 bg-surface-container-lowest border border-border-subtle rounded-lg p-sm flex flex-col justify-between">
+<span class="material-symbols-outlined text-azure-blue">cloud</span>
+<span class="font-label-md text-[11px] truncate">Storage_v1</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full h-20 z-50 flex justify-around items-center px-md pb-safe dark:bg-surface-container-high border-t border-outline-variant bg-surface-container-lowest">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-sm text-label-sm">Overview</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-sm text-label-sm">Storage</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-sm text-label-sm">AI Assistant</span>
+</div>
+</nav>
+<!-- Global Interactions -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Subtle ripple/interaction feedback
+                const ripple = document.createElement('div');
+                ripple.classList.add('absolute', 'inset-0', 'bg-white/20', 'rounded-inherit', 'pointer-events-none');
+                this.style.position = 'relative';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 200);
+            });
+        });
+
+        // Simulating SDK Pulse
+        setInterval(() => {
+            const pulse = document.querySelector('.bg-green-100');
+            if (pulse) {
+                pulse.style.transition = 'opacity 1s';
+                pulse.style.opacity = pulse.style.opacity === '0.7' ? '1' : '0.7';
+            }
+        }, 1500);
+    </script>
+</body></html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Azure AI Studio Research Console - Stochastic Resonance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#23005c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "on-secondary-fixed": "#24005b",
+                    "on-primary": "#ffffff",
+                    "surface-white": "#FFFFFF",
+                    "surface-container-highest": "#e2e2e2",
+                    "surface-tint": "#5f5e5e",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "secondary-container": "#ad89ff",
+                    "on-tertiary-fixed-variant": "#5513c0",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#c8c6c5",
+                    "on-tertiary-container": "#9b70ff",
+                    "azure-blue": "#0078D4",
+                    "tertiary-fixed-dim": "#d0bcff",
+                    "on-primary-container": "#8c8b8b",
+                    "on-surface-variant": "#444748",
+                    "tertiary-container": "#2d0071",
+                    "secondary-fixed-dim": "#d1bcff",
+                    "secondary-fixed": "#eaddff",
+                    "inverse-on-surface": "#f1f1f1",
+                    "tertiary": "#14003b",
+                    "on-primary-fixed-variant": "#474746",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f3f3f3",
+                    "inverse-surface": "#2f3131",
+                    "border-subtle": "#E0E0E0",
+                    "surface-container": "#eeeeee",
+                    "surface-container-high": "#e8e8e8",
+                    "outline": "#747878",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#c4c7c7",
+                    "on-secondary-fixed-variant": "#532ca1",
+                    "on-background": "#1a1c1c",
+                    "on-secondary-container": "#41138e",
+                    "on-error": "#ffffff",
+                    "primary-container": "#242424",
+                    "text-secondary": "#616161",
+                    "surface-bright": "#f9f9f9",
+                    "primary-fixed": "#e4e2e1",
+                    "secondary": "#6c47ba",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#dadada",
+                    "tertiary-fixed": "#e9ddff",
+                    "text-primary": "#242424",
+                    "error": "#ba1a1a",
+                    "primary": "#0e0f0f",
+                    "on-surface": "#1a1c1c",
+                    "surface-variant": "#e2e2e2",
+                    "surface": "#f9f9f9",
+                    "background": "#f9f9f9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "container-max": "1440px",
+                    "base": "4px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "serif": ["Playfair Display", "serif"],
+                    "mono": ["JetBrains Mono", "monospace"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "title-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "code-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f9f9f9;
+            color: #1a1c1c;
+            overflow-x: hidden;
+        }
+        .academic-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr 340px;
+            gap: 1px;
+            background-color: #E0E0E0;
+        }
+        .academic-cell {
+            background-color: #f9f9f9;
+            padding: 24px;
+        }
+        .journal-border-b {
+            border-bottom: 2px solid #1a1c1c;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+        }
+        .thin-border {
+            border: 1px solid #E0E0E0;
+        }
+        .data-visualization {
+            background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::selection {
+            background-color: #0078D4;
+            color: white;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-lg h-14 bg-surface border-b border-border-light">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">science</span>
+<h1 class="font-headline-md text-[18px] font-semibold text-on-surface tracking-tight">Azure AI Studio Research Console</h1>
+</div>
+<div class="flex-1 max-w-xl mx-xl">
+<div class="relative flex items-center bg-surface-container-low px-md py-1 rounded-sm border border-outline-variant">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-sm">search</span>
+<input class="bg-transparent border-none text-body-md w-full focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="Search research papers, telemetry logs, or models..." type="text"/>
+<span class="text-[10px] font-mono text-outline-variant ml-sm px-1 border border-outline-variant rounded">CMD+K</span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined p-sm hover:bg-surface-container-low transition-colors cursor-pointer active:opacity-80">notifications</button>
+<button class="material-symbols-outlined p-sm hover:bg-surface-container-low transition-colors cursor-pointer active:opacity-80">settings</button>
+<button class="material-symbols-outlined p-sm hover:bg-surface-container-low transition-colors cursor-pointer active:opacity-80">help</button>
+</div>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution headshot of a senior computational researcher in a clean, modern lab setting. The lighting is soft and clinical, highlighting scientific expertise and focus. The background shows blurred high-tech interface monitors and data clusters in cool blue and grey tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVloHD_zIQm6bkuwgvdTC3E9VF0IX77Xu8DFXHC6gZ27t61_-Mc4L_TxXXp2EdzZHKdqlUnaJVXPTCnGAW-lwMP75H2NM5hvBGEdf6C9uq59gSFRzzYKIi0ckNSHd8mB4G-W94yyM_MVo_GCfCpM8yPXnAKLiGnitgo1D5bPlvd64QAoNlBksJMnn81EkMqj5Qyy4LSmefWX1RSJFUAmXHBwhSwkou8DvPtOztzjeQ6gCmYnM8d923Uq0-vWp-nNmGqv0Ta20MfYbi"/>
+</div>
+</div>
+</header>
+<div class="pt-14 flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="fixed left-0 h-full w-[320px] bg-canvas-bg border-r border-border-light flex flex-col pt-4 pb-lg">
+<div class="px-lg mb-xl">
+<div class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant opacity-60 mb-1">V-Quantum v2.4</div>
+<div class="font-serif text-xl font-semibold italic text-on-surface">Research Studio</div>
+</div>
+<div class="flex flex-col flex-1 space-y-1">
+<!-- Navigation Items -->
+<a class="text-on-surface-variant flex items-center gap-md px-lg py-sm hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-base">Overview</span>
+</a>
+<a class="text-primary font-body-bold bg-surface-container-high border-l-[2.5px] border-azure-blue flex items-center gap-md px-lg py-sm transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-body-base">Analytics</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-lg py-sm hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-body-base">Storage</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-lg py-sm hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">drafts</span>
+<span class="font-body-base">Drafts</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-lg py-sm hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">archive</span>
+<span class="font-body-base">Archive</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-lg py-sm hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-base">AI Assistant</span>
+</a>
+</div>
+<div class="px-lg mt-auto border-t border-border-subtle pt-md">
+<a class="text-on-surface-variant flex items-center gap-md py-sm hover:bg-surface-container transition-all text-sm" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Docs</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md py-sm hover:bg-surface-container transition-all text-sm" href="#">
+<span class="material-symbols-outlined">signal_cellular_alt</span>
+<span>Status: Online</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Layout -->
+<main class="ml-[320px] flex-1 grid grid-cols-12 overflow-hidden">
+<!-- Left Column: Primary Research Data (Academic Density) -->
+<div class="col-span-8 p-lg overflow-y-auto border-r border-border-subtle bg-white">
+<header class="journal-border-b">
+<div class="flex justify-between items-end">
+<div>
+<div class="text-[11px] font-mono uppercase tracking-[0.2em] text-on-surface-variant mb-2">Technical Memorandum | Ref: AZ-QI-2024</div>
+<h2 class="font-serif text-[38px] leading-tight text-on-surface max-w-2xl font-semibold">Stochastic Resonance in Quantum Flux Telemetry</h2>
+</div>
+<div class="text-right">
+<div class="font-serif italic text-body-md text-on-surface">V-Quantum Intelligence Laboratory</div>
+<div class="text-[12px] text-on-surface-variant">November 22, 2024</div>
+</div>
+</div>
+</header>
+<!-- Quantum Flux Visualizer Card -->
+<div class="grid grid-cols-2 gap-lg mb-xl">
+<div class="thin-border p-md flex flex-col relative overflow-hidden bg-surface-bright">
+<div class="absolute top-0 left-0 w-1 h-full bg-azure-blue"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Quantum Flux Coherence</h3>
+<p class="text-[28px] font-mono text-primary mt-1">0.9998 <span class="text-lg">Φ</span></p>
+</div>
+<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold">NOMINAL</span>
+</div>
+<div class="h-32 data-visualization relative overflow-hidden border-t border-border-subtle pt-sm">
+<!-- Placeholder for Complex Shader Visualization -->
+<div class="relative z-10 flex h-full items-end justify-between px-2 pb-1">
+<div class="w-1 bg-azure-blue h-[80%]"></div>
+<div class="w-1 bg-azure-blue h-[60%]"></div>
+<div class="w-1 bg-azure-blue h-[90%]"></div>
+<div class="w-1 bg-azure-blue h-[75%]"></div>
+<div class="w-1 bg-azure-blue h-[85%]"></div>
+<div class="w-1 bg-azure-blue h-[40%]"></div>
+<div class="w-1 bg-azure-blue h-[95%]"></div>
+<div class="w-1 bg-azure-blue h-[70%]"></div>
+<div class="w-1 bg-azure-blue h-[80%]"></div>
+<div class="w-1 bg-azure-blue h-[50%]"></div>
+</div>
+</div>
+</div>
+<div class="thin-border p-md flex flex-col relative overflow-hidden bg-surface-bright">
+<div class="absolute top-0 left-0 w-1 h-full bg-error"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Entropic Noise</h3>
+<p class="text-[28px] font-mono text-primary mt-1">0.0012 <span class="text-lg">η</span></p>
+</div>
+<span class="text-[10px] bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded font-bold">STABLE</span>
+</div>
+<div class="h-32 data-visualization relative overflow-hidden border-t border-border-subtle pt-sm">
+<div class="relative z-10 flex flex-col justify-center h-full px-2">
+<div class="h-0.5 w-full bg-error/30 mb-4 border-dashed border-t"></div>
+<div class="flex items-baseline gap-2">
+<span class="text-[10px] font-mono text-error">CRIT THRESHOLD: 0.0500 η</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Abstract & Findings -->
+<div class="grid grid-cols-12 gap-xl mb-xl">
+<div class="col-span-12">
+<h4 class="font-serif italic text-lg mb-md text-primary">Abstract</h4>
+<p class="text-body-lg text-on-surface-variant leading-relaxed mb-lg font-light">
+                            Investigation into sub-atomic resonance patterns reveals a non-linear correlation between stochastic cooling and quantum flux telemetry. Utilizing the <span class="font-mono text-sm bg-surface-container-low px-1">NatureLM-Idun-5-MoE</span> core, we observed high-fidelity synchronization across Alpha and Beta channels, suggesting a breakthrough in antigravity containment stabilization. 
+                        </p>
+</div>
+</div>
+<!-- Structural Flow Analysis (Bento style charts) -->
+<div class="mb-xl">
+<div class="flex items-center justify-between mb-md">
+<h4 class="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span>
+                            Structural Flow Analysis
+                        </h4>
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 bg-azure-blue"></div>
+<span class="text-[10px] font-bold">Alpha Channel</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 bg-on-tertiary-container"></div>
+<span class="text-[10px] font-bold">Beta Channel</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-base h-48">
+<!-- Simulated Bar Chart -->
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[40%]"></div>
+<div class="bg-azure-blue h-[50%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[45%]"></div>
+<div class="bg-azure-blue h-[55%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[30%]"></div>
+<div class="bg-azure-blue h-[70%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[60%]"></div>
+<div class="bg-azure-blue h-[20%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[35%]"></div>
+<div class="bg-azure-blue h-[65%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[40%]"></div>
+<div class="bg-azure-blue h-[50%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[10%]"></div>
+<div class="bg-azure-blue h-[80%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[70%]"></div>
+<div class="bg-azure-blue h-[15%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[40%]"></div>
+<div class="bg-azure-blue h-[50%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[55%]"></div>
+<div class="bg-azure-blue h-[35%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[20%]"></div>
+<div class="bg-azure-blue h-[75%]"></div>
+</div>
+<div class="col-span-1 bg-surface-container flex flex-col justify-end p-[1px] gap-[1px]">
+<div class="bg-on-tertiary-container h-[45%]"></div>
+<div class="bg-azure-blue h-[45%]"></div>
+</div>
+</div>
+</div>
+<!-- Command Module -->
+<div class="rounded-sm bg-primary-container p-lg font-mono text-[13px] text-surface-container-low mb-xl border border-outline">
+<div class="flex items-center justify-between mb-md border-b border-outline-variant/20 pb-sm">
+<div class="flex items-center gap-md">
+<span class="text-azure-blue">Antigravity-CLI v0.9.1</span>
+<span class="text-on-surface-variant">/session/root/stitch-sdk</span>
+</div>
+<div class="flex gap-sm">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-green-400">root@v-quantum:~$ <span class="text-white">stitch-sdk --analyze --flux-channel alpha</span></div>
+<div class="opacity-80">[INFO] Initializing Quantum Core Telemetry...</div>
+<div class="opacity-80">[INFO] Handshake with NatureLM-Idun-5-MoE: SUCCESS</div>
+<div class="text-azure-blue">[STITCH] Generating resonance topology for 0.9998 Φ</div>
+<div class="opacity-80">[INFO] Processing 1,244,102 vectors...</div>
+<div class="text-yellow-400">[WARN] Minor jitter detected in Beta Channel (0.0012 η)</div>
+<div class="text-green-400">root@v-quantum:~$ <span class="text-white animate-pulse">_</span></div>
+</div>
+</div>
+</div>
+<!-- Right Column: AI Assistant & Docs (Agent Intelligence) -->
+<div class="col-span-4 bg-surface-container-low p-lg overflow-y-auto">
+<!-- Core Intelligence Module -->
+<section class="mb-xl">
+<div class="flex items-center justify-between mb-lg">
+<h4 class="text-xs font-bold uppercase tracking-widest text-primary">Core Intelligence Module</h4>
+<div class="flex items-center gap-sm">
+<span class="status-dot bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+<span class="text-[10px] font-bold uppercase">Operational</span>
+</div>
+</div>
+<div class="bg-white thin-border rounded-lg p-lg shadow-sm mb-lg">
+<div class="flex items-center gap-md mb-md">
+<div class="h-12 w-12 rounded-full bg-gradient-to-br from-azure-blue to-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[28px]">biotech</span>
+</div>
+<div>
+<h5 class="font-bold text-primary">NatureLM-Idun-5-MoE</h5>
+<p class="text-[10px] text-on-surface-variant font-mono">Agent ID: IDUN-05-9982</p>
+</div>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed italic border-l-2 border-azure-blue pl-md mb-md">
+                            "I have analyzed the current flux coherence levels. The stochastic resonance patterns indicate a potential optimization in the Stitch SDK protocols. Should I initialize the Alpha-Beta cross-validation?"
+                        </p>
+<div class="flex flex-col gap-sm">
+<button class="w-full py-sm bg-azure-blue text-white font-bold text-xs uppercase tracking-widest hover:bg-azure-blue/90 transition-all rounded-sm">Run Sync Protocol</button>
+<button class="w-full py-sm border border-azure-blue text-azure-blue font-bold text-xs uppercase tracking-widest hover:bg-azure-blue/5 transition-all rounded-sm">View Reasoning Chain</button>
+</div>
+</div>
+</section>
+<!-- Agent Intelligence Documentation (Reference content) -->
+<section class="mb-xl"><h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-lg border-b border-border-subtle pb-sm">Agent Intelligence Documentation</h4><div class="space-y-lg"><div class="group cursor-pointer"><h6 class="text-sm font-bold group-hover:text-azure-blue transition-colors mb-1">Build-Agents</h6><ul class="text-[12px] text-on-surface-variant space-y-sm list-disc list-inside"><li>Teams SDK (v2.x)</li><li>Custom Engine Agents</li><li>AI UX Patterns</li></ul></div><div class="group cursor-pointer"><h6 class="text-sm font-bold group-hover:text-azure-blue transition-colors mb-1">Workflow &amp; Lifecycle</h6><ul class="text-[12px] text-on-surface-variant space-y-sm list-disc list-inside"><li>Local Debugging</li><li>Azure Deployment</li><li>Manifest Schema</li></ul></div><div class="group cursor-pointer"><h6 class="text-sm font-bold group-hover:text-azure-blue transition-colors mb-1">Capabilities</h6><ul class="text-[12px] text-on-surface-variant space-y-sm list-disc list-inside"><li>Declarative Agents</li><li>Conversational AI</li><li>SSO Auth Configuration</li></ul></div><div class="group cursor-pointer"><h6 class="text-sm font-bold group-hover:text-azure-blue transition-colors mb-1">Validation</h6><ul class="text-[12px] text-on-surface-variant space-y-sm list-disc list-inside"><li>Store Policies</li><li>Common Failure Points</li></ul></div></div></section>
+<!-- Project Metadata -->
+<section class="mt-auto">
+<div class="bg-primary/5 p-md rounded-sm border border-primary/10">
+<h4 class="text-[10px] font-bold uppercase text-primary/60 mb-2">Project Integrity</h4>
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs">Data Fidelity</span>
+<span class="text-xs font-mono font-bold">100%</span>
+</div>
+<div class="w-full bg-surface-container h-1 rounded-full mb-md">
+<div class="bg-azure-blue h-1 rounded-full w-full"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs">Security Clearance</span>
+<span class="text-xs font-bold text-on-tertiary-fixed-variant">LEVEL 5-Q</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Micro-interaction overlay for chart highlights -->
+<div class="fixed hidden bg-primary text-white text-[10px] px-2 py-1 pointer-events-none z-[100] shadow-lg rounded-sm" id="chart-tooltip"></div>
+<script>
+        // Micro-interactions for chart bars
+        const bars = document.querySelectorAll('.col-span-1');
+        const tooltip = document.getElementById('chart-tooltip');
+
+        bars.forEach(bar => {
+            bar.addEventListener('mouseenter', (e) => {
+                const rect = bar.getBoundingClientRect();
+                tooltip.style.left = `${rect.left}px`;
+                tooltip.style.top = `${rect.top - 25}px`;
+                tooltip.classList.remove('hidden');
+                tooltip.innerText = `Vector: ${Math.floor(Math.random() * 10000)} | Flux: ${(Math.random() * 0.9).toFixed(4)}`;
+                bar.style.opacity = '0.8';
+            });
+            bar.addEventListener('mouseleave', () => {
+                tooltip.classList.add('hidden');
+                bar.style.opacity = '1';
+            });
+        });
+
+        // Search Bar Keyboard Shortcut Micro-interaction
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                document.querySelector('input[type="text"]').focus();
+            }
+        });
+    </script>
+</body></html>

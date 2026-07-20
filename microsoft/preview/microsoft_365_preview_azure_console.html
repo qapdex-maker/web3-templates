@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Microsoft 365 - Azure Resource Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "status-warning": "#FFB900",
+                    "on-primary-fixed-variant": "#004883",
+                    "primary": "#005faa",
+                    "surface-variant": "#e6e2df",
+                    "on-secondary-fixed-variant": "#00497d",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#c0c7d4",
+                    "surface": "#fdf8f6",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#ffdbc8",
+                    "background": "#fdf8f6",
+                    "tertiary": "#974700",
+                    "primary-container": "#0078d4",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#001d36",
+                    "secondary-container": "#5badff",
+                    "tertiary-container": "#bc5b00",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#d1e4ff",
+                    "surface-gray": "#F3F2F1",
+                    "secondary-fixed-dim": "#9ecaff",
+                    "surface-container-highest": "#e6e2df",
+                    "inverse-primary": "#a3c9ff",
+                    "border-gray": "#EDEBE9",
+                    "outline": "#717783",
+                    "inverse-on-surface": "#f4f0ed",
+                    "error-container": "#ffdad6",
+                    "status-success": "#107C10",
+                    "on-primary-container": "#ffffff",
+                    "primary-fixed": "#d3e3ff",
+                    "on-tertiary-fixed-variant": "#743500",
+                    "on-secondary-container": "#003f6d",
+                    "tertiary-fixed-dim": "#ffb689",
+                    "surface-container": "#f1edea",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#ddd9d6",
+                    "on-background": "#1c1b1a",
+                    "primary-fixed-dim": "#a3c9ff",
+                    "on-primary-fixed": "#001c39",
+                    "secondary": "#0061a3",
+                    "on-tertiary-container": "#ffffff",
+                    "inverse-surface": "#31302e",
+                    "surface-container-high": "#ece7e4",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#f7f3f0",
+                    "on-surface": "#1c1b1a",
+                    "on-tertiary-fixed": "#311300",
+                    "status-error": "#A4262C",
+                    "on-surface-variant": "#404752",
+                    "surface-bright": "#fdf8f6",
+                    "surface-tint": "#0060ab",
+                    "azure-blue": "#0078D4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "caption": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display": ["Inter"],
+                    "title": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "caption": ["11px", {"lineHeight": "14px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display": ["42px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "title": ["16px", {"lineHeight": "22px", "fontWeight": "600"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #fdf8f6; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-effect { backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.7); }
+        .sidebar-active-indicator { position: absolute; left: 0; width: 3px; height: 100%; background-color: #0078D4; }
+        .fluent-card { border: 1px solid #EDEBE9; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fluent-card:hover { border-color: #0078D4; box-shadow: 0px 2px 4px rgba(0,0,0,0.08); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d1e4ff; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface overflow-hidden">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full h-12 z-50 flex items-center px-4 justify-between bg-primary dark:bg-surface-container-highest shadow-sm">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-primary cursor-pointer hover:bg-primary-container/20 p-1 rounded">apps</span>
+<span class="font-title text-title text-on-primary font-bold">Microsoft 365</span>
+</div>
+<div class="hidden md:flex flex-1 max-w-xl mx-8 relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-primary/60 text-[20px]">search</span>
+<input class="w-full bg-primary-container/20 border-none rounded py-1 pl-10 pr-4 text-on-primary placeholder:text-on-primary/60 focus:ring-1 focus:ring-on-primary text-body-md font-body-md" placeholder="Search resources, services, and docs" type="text"/>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 text-on-primary hover:bg-primary-container/20 transition-colors rounded">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-primary hover:bg-primary-container/20 transition-colors rounded">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 text-on-primary hover:bg-primary-container/20 transition-colors rounded">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="w-8 h-8 rounded-full ml-2 border border-on-primary/20 bg-secondary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up headshot of a professional user in a corporate setting, with soft natural lighting and a blurred office background, representing a high-quality user profile avatar for Microsoft 365 dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChaOvd_Ab0c0TGtC0xKOHZKm2h6glwkafo25oq1Gyo3TafizbLtSpsxX2d8vZ8ZTC7YP09XY8C3TfEN0GkouPdYyTjkxMC6E3pCk5uyXq6lt2T8swvDNdo7VQnK7F-9ILdLNzo1Eto97R3voXbhrAVRx2zsA5NkDyzyr5e0Y_R4b8M0z9UPr2VlepOB9XAJKfnzjkAMjJn8Nktl60sP8AzwOX0WYqLmo3iipDkrT5SkUQTgsz8mcFuqI62spUFv4G-U_7aY--JxHDV"/>
+</div>
+</div>
+</header>
+<div class="flex h-screen pt-12">
+<!-- SideNavBar Shell -->
+<nav class="fixed left-0 top-12 bottom-0 w-60 flex flex-col pt-4 pb-8 z-40 bg-surface dark:bg-surface-dim border-r border-border-gray dark:border-outline-variant">
+<div class="px-6 mb-6">
+<h2 class="font-title text-title text-on-surface font-bold">M365 Admin</h2>
+<p class="text-caption font-caption text-on-surface-variant">Enterprise Console</p>
+</div>
+<div class="flex-1 space-y-1">
+<a class="relative flex items-center gap-3 px-6 py-2.5 bg-secondary-fixed dark:bg-on-secondary-fixed-variant text-on-secondary-fixed font-bold border-l-4 border-azure-blue" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-body-md font-body-md">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2.5 text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">cloud</span>
+<span class="text-body-md font-body-md">Storage</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2.5 text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-body-md font-body-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2.5 text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-body-md font-body-md">AI Assistant</span>
+</a>
+</div>
+<div class="mt-auto pt-4 border-t border-border-gray/50">
+<a class="flex items-center gap-3 px-6 py-2.5 text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-body-md font-body-md">Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-60 flex-1 overflow-y-auto p-8 custom-scrollbar">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-azure-blue text-[28px]">database</span>
+<h1 class="font-headline-md text-headline-md text-on-surface">Azure Resource Management</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-body-md text-on-surface-variant">Storage Accounts / <span class="font-bold text-on-surface">qmfiresiq</span></span>
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed-variant text-caption font-caption flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                            Preview Mode
+                        </span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded-sm font-label-md text-label-md flex items-center gap-2 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                        Refresh
+                    </button>
+<button class="bg-surface border border-border-gray text-on-surface px-4 py-1.5 rounded-sm font-label-md text-label-md flex items-center gap-2 hover:bg-surface-gray transition-all">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit
+                    </button>
+</div>
+</div>
+<!-- Visual Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="fluent-card bg-surface-container-lowest p-5 rounded-sm flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<span class="text-caption font-caption text-on-surface-variant uppercase tracking-wider">Storage Usage</span>
+<span class="material-symbols-outlined text-azure-blue">data_usage</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="text-headline-lg font-headline-lg">1.24</span>
+<span class="text-body-md font-body-md text-on-surface-variant pb-1.5">TB / 5.0 TB</span>
+</div>
+<div class="w-full bg-surface-gray h-1.5 rounded-full overflow-hidden">
+<div class="bg-azure-blue h-full w-[24%] rounded-full"></div>
+</div>
+</div>
+<div class="fluent-card bg-surface-container-lowest p-5 rounded-sm flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<span class="text-caption font-caption text-on-surface-variant uppercase tracking-wider">Request Latency</span>
+<span class="material-symbols-outlined text-azure-blue">speed</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="text-headline-lg font-headline-lg">12</span>
+<span class="text-body-md font-body-md text-on-surface-variant pb-1.5">ms (avg)</span>
+</div>
+<div class="flex items-center gap-1 text-status-success font-caption text-caption">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+<span>-4% from last hour</span>
+</div>
+</div>
+<div class="fluent-card bg-surface-container-lowest p-5 rounded-sm flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<span class="text-caption font-caption text-on-surface-variant uppercase tracking-wider">Availability</span>
+<span class="material-symbols-outlined text-azure-blue">check_circle</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="text-headline-lg font-headline-lg text-status-success">99.98</span>
+<span class="text-body-md font-body-md text-on-surface-variant pb-1.5">%</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-caption text-caption">
+<span class="w-2 h-2 rounded-full bg-status-success"></span>
+<span>Service Health: Healthy</span>
+</div>
+</div>
+</div>
+<!-- Two-Column Layout for Details and Chatbot -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+<!-- Left: Resource Details & List -->
+<div class="xl:col-span-8 space-y-8">
+<!-- Resource Details Section -->
+<section class="fluent-card bg-surface-container-lowest rounded-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-border-gray bg-surface-gray/30 flex justify-between items-center">
+<h3 class="font-title text-title text-on-surface">Resource Configuration</h3>
+<span class="text-caption text-on-surface-variant font-medium">Provisioning State: Succeeded</span>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+<div class="space-y-4">
+<div class="flex justify-between py-1 border-b border-border-gray/50">
+<span class="text-body-md text-on-surface-variant">Storage Account Name</span>
+<span class="text-body-md font-bold text-on-surface">qmfiresiq</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-gray/50">
+<span class="text-body-md text-on-surface-variant">Location</span>
+<span class="text-body-md font-medium text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">public</span>
+                                        swedencentral
+                                    </span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-gray/50">
+<span class="text-body-md text-on-surface-variant">SKU</span>
+<span class="text-body-md font-bold text-azure-blue">Standard_LRS</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between py-1 border-b border-border-gray/50">
+<span class="text-body-md text-on-surface-variant">Minimum TLS Version</span>
+<span class="px-2 py-0.5 bg-surface-gray rounded text-caption font-bold">TLS 1.2</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-gray/50">
+<span class="text-body-md text-on-surface-variant">HTTPS Only</span>
+<span class="text-body-md font-bold text-status-success">Enabled</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-gray/50">
+<span class="text-body-md text-on-surface-variant">Access Tier</span>
+<span class="text-body-md font-medium text-on-surface">Hot</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Resource List Table -->
+<section class="fluent-card bg-surface-container-lowest rounded-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-border-gray bg-surface-gray/30 flex justify-between items-center">
+<h3 class="font-title text-title text-on-surface">Services &amp; Sub-resources</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-gray/20 text-caption font-caption text-on-surface-variant uppercase tracking-wider">
+<tr>
+<th class="px-6 py-3 font-medium">Service Name</th>
+<th class="px-6 py-3 font-medium">Status</th>
+<th class="px-6 py-3 font-medium">Properties</th>
+<th class="px-6 py-3 font-medium text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-gray">
+<tr class="hover:bg-surface-gray/10 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-azure-blue">folder_zip</span>
+<span class="text-body-md font-medium">blobServices</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-status-success text-caption flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Online
+                                            </span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">Versioning Enabled</td>
+<td class="px-6 py-4 text-right">
+<button class="text-azure-blue hover:underline text-caption font-bold">Configure</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-gray/10 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-azure-blue">folder_shared</span>
+<span class="text-body-md font-medium">fileServices</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-status-success text-caption flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Online
+                                            </span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">SMB 3.1.1</td>
+<td class="px-6 py-4 text-right">
+<button class="text-azure-blue hover:underline text-caption font-bold">Configure</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-gray/10 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-azure-blue">queue</span>
+<span class="text-body-md font-medium">queueServices</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-status-success text-caption flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Online
+                                            </span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">No pending messages</td>
+<td class="px-6 py-4 text-right">
+<button class="text-azure-blue hover:underline text-caption font-bold">Configure</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-gray/10 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-azure-blue">table_chart</span>
+<span class="text-body-md font-medium">tableServices</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-status-success text-caption flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Online
+                                            </span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">Schema-less Data</td>
+<td class="px-6 py-4 text-right">
+<button class="text-azure-blue hover:underline text-caption font-bold">Configure</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-gray/10 transition-colors bg-secondary-fixed/10">
+<td class="px-6 py-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-azure-blue">inventory_2</span>
+<span class="text-body-md font-bold">contosoproducts</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-status-success text-caption flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Container Active
+                                            </span>
+</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant font-bold">Private Access</td>
+<td class="px-6 py-4 text-right">
+<button class="text-azure-blue hover:underline text-caption font-bold">Browse</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Right: AI Assistant Section -->
+<div class="xl:col-span-4 h-full">
+<div class="fluent-card bg-surface-container-lowest rounded-sm overflow-hidden h-full flex flex-col shadow-sm sticky top-4">
+<div class="px-4 py-3 bg-azure-blue text-on-primary flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span class="font-title text-title font-bold">AI Assistant</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-[18px] cursor-pointer opacity-80 hover:opacity-100">close_fullscreen</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer opacity-80 hover:opacity-100">more_horiz</span>
+</div>
+</div>
+<div class="flex-1 min-h-[500px]">
+<iframe src="https://webchat.botframework.com/embed/naturelm-idun-5-moe74629?s=YOUR_SECRET_HERE" style="width: 100%; height: 100%; min-height: 502px; border: none;" title="M365 Copilot Admin Assistant">
+</iframe>
+</div>
+<div class="p-3 border-t border-border-gray bg-surface-gray/10">
+<p class="text-caption font-caption text-on-surface-variant text-center italic">
+                                "Try asking: How do I rotate storage access keys safely?"
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Active link management
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    navLinks.forEach(l => {
+                        l.classList.remove('bg-secondary-fixed', 'text-on-secondary-fixed', 'font-bold', 'border-l-4', 'border-azure-blue');
+                        l.classList.add('text-on-surface-variant');
+                    });
+                    link.classList.add('bg-secondary-fixed', 'text-on-secondary-fixed', 'font-bold', 'border-l-4', 'border-azure-blue');
+                    link.classList.remove('text-on-surface-variant');
+                });
+            });
+
+            // Console logging simulation
+            console.log("Azure Dashboard Initialized in Preview Mode.");
+        });
+    </script>
+</body></html>

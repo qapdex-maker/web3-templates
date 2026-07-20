@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Azure AI Studio - Stitch SDK Integration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f9f9f9",
+                    "surface-variant": "#e2e2e2",
+                    "primary-fixed": "#e4e2e1",
+                    "border-subtle": "#E0E0E0",
+                    "surface-bright": "#f9f9f9",
+                    "tertiary": "#14003b",
+                    "inverse-primary": "#c8c6c5",
+                    "on-surface": "#1a1c1c",
+                    "text-primary": "#242424",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#6c47ba",
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-primary-fixed": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#c4c7c7",
+                    "tertiary-container": "#2d0071",
+                    "surface-dim": "#dadada",
+                    "outline": "#747878",
+                    "on-surface-variant": "#444748",
+                    "tertiary-fixed": "#e9ddff",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-tertiary-fixed": "#23005c",
+                    "on-primary": "#ffffff",
+                    "on-background": "#1a1c1c",
+                    "on-tertiary-fixed-variant": "#5513c0",
+                    "surface-white": "#FFFFFF",
+                    "on-secondary-fixed": "#24005b",
+                    "on-secondary-fixed-variant": "#532ca1",
+                    "on-secondary-container": "#41138e",
+                    "surface": "#f9f9f9",
+                    "secondary-fixed": "#eaddff",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "secondary-container": "#ad89ff",
+                    "on-primary-container": "#8c8b8b",
+                    "azure-blue": "#0078D4",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f3f3f3",
+                    "surface-container-high": "#e8e8e8",
+                    "text-secondary": "#616161",
+                    "surface-container": "#eeeeee",
+                    "primary-container": "#242424",
+                    "inverse-surface": "#2f3131",
+                    "on-primary-fixed-variant": "#474746",
+                    "on-tertiary-container": "#9b70ff",
+                    "primary": "#0e0f0f",
+                    "tertiary-fixed-dim": "#d0bcff",
+                    "surface-tint": "#5f5e5e",
+                    "secondary-fixed-dim": "#d1bcff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "container-max": "1440px",
+                    "base": "4px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "code-sm": ["JetBrains Mono", "monospace"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["40px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .code-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-text-primary">
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar Integration -->
+<aside class="flex flex-col h-screen sticky top-0 bg-surface-container-low dark:bg-surface-dim border-r border-border-subtle dark:border-outline-variant w-64 shrink-0">
+<div class="p-lg">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface">Azure</h1>
+<p class="font-body-md text-body-md text-text-secondary mt-1">NatureLM-Project-01</p>
+<div class="mt-lg flex items-center gap-md p-md bg-surface-white border border-border-subtle rounded-lg">
+<span class="material-symbols-outlined text-azure-blue">science</span>
+<div>
+<p class="font-label-md text-label-md font-bold">Resource</p>
+<p class="font-body-md text-body-md text-text-secondary">Management</p>
+</div>
+</div>
+<button class="w-full mt-lg bg-azure-blue text-white font-body-md py-md rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">add</span>
+                    New Experiment
+                </button>
+</div>
+<nav class="flex-1 px-md mt-sm overflow-y-auto custom-scrollbar">
+<div class="space-y-base">
+<a class="flex items-center gap-md px-md py-md bg-secondary-fixed text-on-secondary-fixed-variant font-bold border-l-4 border-azure-blue transition-all duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Overview</span>
+</a>
+<a class="flex items-center gap-md px-md py-md text-text-secondary hover:bg-surface-container-high transition-all duration-150" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-body-md text-body-md">Storage</span>
+</a>
+<a class="flex items-center gap-md px-md py-md text-text-secondary hover:bg-surface-container-high transition-all duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-md text-text-secondary hover:bg-surface-container-high transition-all duration-150" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-md text-body-md">AI Assistant</span>
+</a>
+</div>
+</nav>
+<div class="p-md border-t border-border-subtle mt-auto">
+<a class="flex items-center gap-md px-md py-md text-text-secondary hover:bg-surface-container-high transition-all duration-150" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-md text-body-md">Documentation</span>
+</a>
+<a class="flex items-center gap-md px-md py-md text-text-secondary hover:bg-surface-container-high transition-all duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-background">
+<!-- TopNavBar Integration -->
+<header class="flex justify-between items-center w-full px-lg h-16 bg-surface-white border-b border-border-subtle dark:border-outline-variant shadow-sm shrink-0 sticky top-0 z-10">
+<div class="flex items-center gap-lg">
+<span class="font-title-md text-title-md font-bold text-azure-blue">Azure AI Studio</span>
+<div class="hidden lg:flex items-center gap-md">
+<a class="text-primary font-bold border-b-2 border-azure-blue pb-1 font-body-md text-body-md" href="#">NatureLM-Idun-5-MoE</a>
+<span class="flex items-center gap-xs text-text-secondary font-body-md px-md py-xs bg-surface-container rounded-full">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Status: Healthy
+                        </span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden md:block">
+<input class="pl-xl pr-md py-sm bg-surface-container border-none rounded-lg text-body-md focus:ring-2 focus:ring-azure-blue w-64" placeholder="Search resources..." type="text"/>
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-text-secondary text-[20px]">search</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-text-secondary hover:text-azure-blue transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm text-text-secondary hover:text-azure-blue transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-sm text-text-secondary hover:text-azure-blue transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-subtle">
+<img class="w-full h-full object-cover" data-alt="A professional profile headshot of a software architect in a minimalist setting, high-end office environment with soft bokeh background and cool corporate lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCauYXUnEDaxSLYztFCE6iILwnb5GGkhNkY4S9_ciUCe5oK5rZUA0UfR-5vgn6mM1wjXCW1vae-J4ul1xdVDp_WghKv10j1DtTMfRBV9WrRQkD4hm6IUXZhrpvoIphzIIPWE8qPLnGDZYUDqkZg6kryoizCu3iQFgqP7168BC8mnRQjdyb_6v-6efRWrhuHHTMtNtpiGs1Y0hyq4zTa0vd7mVc7AekN1vlKk-3gWegnjpRkIwyFqCjanDm112QXV2ij4frY61Wb0nfz"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="p-lg max-w-container-max mx-auto w-full space-y-lg">
+<!-- Hero & Stitch SDK Console -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Stitch SDK UI Generation Console (Primary focus) -->
+<section class="lg:col-span-8 bg-surface-white border border-border-subtle rounded-xl shadow-sm overflow-hidden flex flex-col h-[520px]">
+<div class="px-lg py-md border-b border-border-subtle bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-azure-blue" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h2 class="font-title-md text-title-md text-text-primary">Stitch SDK UI Generation Console</h2>
+</div>
+<span class="bg-azure-blue/10 text-azure-blue text-label-md px-md py-xs rounded-full font-bold">SDK Active v4.2.0</span>
+</div>
+<div class="flex-1 flex flex-col p-lg gap-lg overflow-y-auto custom-scrollbar">
+<!-- Terminal-like interaction -->
+<div class="space-y-md">
+<div class="flex gap-md">
+<div class="w-8 h-8 rounded bg-azure-blue flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white text-[18px]">person</span>
+</div>
+<div class="bg-surface-container-low p-md rounded-lg max-w-[85%]">
+<p class="font-body-md text-body-md">Generate a high-density data visualization dashboard for tracking quantum entanglement stability across the Antigravity CLI cluster.</p>
+</div>
+</div>
+<div class="flex gap-md">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white text-[18px]">smart_toy</span>
+</div>
+<div class="bg-surface-white border border-azure-blue/20 p-md rounded-lg max-w-[85%] shadow-sm">
+<p class="font-body-md text-body-md text-azure-blue font-bold mb-sm">NatureLM-Idun-5-MoE</p>
+<p class="font-body-md text-body-md mb-md">Analyzing prompt context. Extracting Quantum Architecture schematics from Jules Maintenance logs...</p>
+<div class="flex items-center gap-sm p-sm bg-emerald-50 text-emerald-700 rounded border border-emerald-100 mb-md">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="font-label-md text-label-md">Success: UI Components Extracted via Stitch SDK</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="aspect-video rounded bg-surface-container border border-border-subtle flex flex-col items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-text-secondary">query_stats</span>
+<span class="font-label-md text-label-md text-text-secondary">Preview: Entanglement Graph</span>
+</div>
+<div class="aspect-video rounded bg-surface-container border border-border-subtle flex flex-col items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-text-secondary">view_quilt</span>
+<span class="font-label-md text-label-md text-text-secondary">Preview: Cluster Layout</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-lg border-t border-border-subtle bg-surface-container-lowest">
+<div class="relative">
+<textarea class="w-full p-lg pr-16 bg-surface-white border border-border-subtle rounded-xl text-body-md focus:ring-2 focus:ring-azure-blue resize-none h-24" placeholder="Describe the UI you want to generate..."></textarea>
+<button class="absolute right-md bottom-md p-md bg-azure-blue text-white rounded-lg hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</section>
+<!-- SDK Configuration & Code -->
+<section class="lg:col-span-4 space-y-lg">
+<!-- Configuration Status -->
+<div class="bg-surface-white border border-border-subtle rounded-xl p-lg shadow-sm">
+<h3 class="font-title-md text-title-md mb-lg">SDK Configuration</h3>
+<div class="space-y-md">
+<div class="flex items-center justify-between p-md bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-azure-blue">link</span>
+<span class="font-body-md text-body-md font-medium">Stitch Endpoint</span>
+</div>
+<span class="text-emerald-600 font-bold text-label-md">ONLINE</span>
+</div>
+<div class="flex items-center justify-between p-md bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-azure-blue">cloud_done</span>
+<span class="font-body-md text-body-md font-medium">NatureLM API</span>
+</div>
+<span class="text-emerald-600 font-bold text-label-md">CONNECTED</span>
+</div>
+<div class="flex items-center justify-between p-md bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-azure-blue">key</span>
+<span class="font-body-md text-body-md font-medium">API Auth Token</span>
+</div>
+<span class="text-text-secondary text-label-md">••••••••4k2x</span>
+</div>
+</div>
+</div>
+<!-- Code Initialization -->
+<div class="bg-primary text-white rounded-xl p-lg shadow-sm">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-on-primary-container">Initialization Sample</h3>
+<span class="material-symbols-outlined text-[18px] opacity-50 cursor-pointer hover:opacity-100">content_copy</span>
+</div>
+<div class="code-container bg-black/30 border border-white/10">
+<pre class="whitespace-pre-wrap"><span class="text-secondary-container">import</span> { StitchSDK } <span class="text-secondary-container">from</span> <span class="text-emerald-400">'@azure/stitch-ai'</span>;
+
+<span class="text-on-primary-container">// Initialize Client</span>
+<span class="text-secondary-container">const</span> client = <span class="text-secondary-container">new</span> StitchSDK({
+  apiKey: <span class="text-emerald-400">'STUDIO_AUTH_TOKEN'</span>,
+  region: <span class="text-emerald-400">'us-east-1'</span>,
+  model: <span class="text-emerald-400">'naturelm-idun-5'</span>
+});
+
+<span class="text-on-primary-container">// Generate Screen</span>
+<span class="text-secondary-container">await</span> client.ui.generate({
+  prompt: <span class="text-emerald-400">'Quantum Metrics'</span>,
+  theme: <span class="text-emerald-400">'light'</span>
+});</pre>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Row: Legacy Elements (Bento Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Quantum Architecture -->
+<div class="bg-surface-white border border-border-subtle rounded-xl p-lg shadow-sm hover:border-azure-blue transition-colors group">
+<div class="flex items-center justify-between mb-lg">
+<span class="material-symbols-outlined text-azure-blue p-sm bg-azure-blue/5 rounded-lg">hub</span>
+<span class="material-symbols-outlined text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+</div>
+<h4 class="font-body-lg text-body-lg font-bold mb-xs">Quantum Architecture</h4>
+<p class="font-body-md text-body-md text-text-secondary mb-lg">Monitoring entanglement drift and superposition stability.</p>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-azure-blue w-[88%]"></div>
+</div>
+<p class="text-label-md font-bold text-azure-blue mt-sm">88% Stability</p>
+</div>
+<!-- Antigravity CLI -->
+<div class="bg-surface-white border border-border-subtle rounded-xl p-lg shadow-sm hover:border-azure-blue transition-colors group">
+<div class="flex items-center justify-between mb-lg">
+<span class="material-symbols-outlined text-azure-blue p-sm bg-azure-blue/5 rounded-lg">terminal</span>
+<span class="material-symbols-outlined text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity">settings_ethernet</span>
+</div>
+<h4 class="font-body-lg text-body-lg font-bold mb-xs">Antigravity CLI</h4>
+<p class="font-body-md text-body-md text-text-secondary mb-lg">Command-line interface for mass-offset gravitational bias.</p>
+<div class="flex flex-wrap gap-xs">
+<span class="px-md py-xs bg-surface-container text-label-md rounded border border-border-subtle">ag-cli-4</span>
+<span class="px-md py-xs bg-surface-container text-label-md rounded border border-border-subtle">bias-0.12</span>
+</div>
+</div>
+<!-- Jules Maintenance -->
+<div class="bg-surface-white border border-border-subtle rounded-xl p-lg shadow-sm hover:border-azure-blue transition-colors group relative overflow-hidden">
+<div class="flex items-center justify-between mb-lg">
+<span class="material-symbols-outlined text-azure-blue p-sm bg-azure-blue/5 rounded-lg">construction</span>
+<div class="flex items-center -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-surface-white bg-surface-container-high"></div>
+<div class="w-6 h-6 rounded-full border-2 border-surface-white bg-surface-variant"></div>
+</div>
+</div>
+<h4 class="font-body-lg text-body-lg font-bold mb-xs">Jules Maintenance</h4>
+<p class="font-body-md text-body-md text-text-secondary mb-lg">Next routine check in 4h 22m for the AI Core cluster.</p>
+<div class="flex items-center gap-md text-label-md text-text-secondary">
+<span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Pending</span>
+<span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Completed</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        // Lightweight interaction for terminal/chat feeling
+        document.querySelector('button.bg-azure-blue').addEventListener('click', function() {
+            const textarea = document.querySelector('textarea');
+            if (textarea.value.trim() !== "") {
+                const chatContainer = document.querySelector('.custom-scrollbar .space-y-md');
+                
+                // Add user message
+                const userMsg = document.createElement('div');
+                userMsg.className = 'flex gap-md';
+                userMsg.innerHTML = `
+                    <div class="w-8 h-8 rounded bg-azure-blue flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-white text-[18px]">person</span>
+                    </div>
+                    <div class="bg-surface-container-low p-md rounded-lg max-w-[85%]">
+                        <p class="font-body-md text-body-md">${textarea.value}</p>
+                    </div>
+                `;
+                chatContainer.appendChild(userMsg);
+                
+                // Reset textarea
+                textarea.value = "";
+                
+                // Add fake AI "typing" delay
+                setTimeout(() => {
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = 'flex gap-md';
+                    aiMsg.innerHTML = `
+                        <div class="w-8 h-8 rounded bg-primary flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-white text-[18px]">smart_toy</span>
+                        </div>
+                        <div class="bg-surface-white border border-azure-blue/20 p-md rounded-lg max-w-[85%] shadow-sm">
+                            <p class="font-body-md text-body-md text-azure-blue font-bold mb-sm">NatureLM-Idun-5-MoE</p>
+                            <p class="font-body-md text-body-md">Stitch SDK session initialized. Rendering temporary components for requested prompt...</p>
+                            <div class="mt-md p-md bg-surface-container border-dashed border-2 border-azure-blue/20 rounded flex items-center justify-center">
+                                <span class="font-label-md text-label-md text-text-secondary italic">Building dynamic UI preview...</span>
+                            </div>
+                        </div>
+                    `;
+                    chatContainer.appendChild(aiMsg);
+                    chatContainer.parentElement.scrollTop = chatContainer.parentElement.scrollHeight;
+                }, 1000);
+                
+                chatContainer.parentElement.scrollTop = chatContainer.parentElement.scrollHeight;
+            }
+        });
+    </script>
+</body></html>

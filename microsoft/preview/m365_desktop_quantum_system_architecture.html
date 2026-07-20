@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quantum System Architecture | qmfiresearch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "status-success": "#107C10",
+                    "secondary-container": "#5badff",
+                    "primary": "#005faa",
+                    "inverse-on-surface": "#f4f0ed",
+                    "on-primary-fixed": "#001c39",
+                    "surface-gray": "#F3F2F1",
+                    "on-tertiary-fixed-variant": "#743500",
+                    "primary-fixed": "#d3e3ff",
+                    "on-background": "#1c1b1a",
+                    "on-secondary-container": "#003f6d",
+                    "on-surface": "#1c1b1a",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#404752",
+                    "surface-dim": "#ddd9d6",
+                    "tertiary": "#974700",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#004883",
+                    "inverse-primary": "#a3c9ff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e6e2df",
+                    "on-secondary-fixed": "#001d36",
+                    "background": "#fdf8f6",
+                    "secondary-fixed-dim": "#9ecaff",
+                    "secondary-fixed": "#d1e4ff",
+                    "primary-container": "#0078d4",
+                    "inverse-surface": "#31302e",
+                    "on-primary-container": "#ffffff",
+                    "status-warning": "#FFB900",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#f7f3f0",
+                    "outline-variant": "#c0c7d4",
+                    "on-tertiary-container": "#ffffff",
+                    "surface-variant": "#e6e2df",
+                    "surface-tint": "#0060ab",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f1edea",
+                    "tertiary-fixed-dim": "#ffb689",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#bc5b00",
+                    "outline": "#717783",
+                    "surface": "#fdf8f6",
+                    "secondary": "#0061a3",
+                    "on-tertiary-fixed": "#311300",
+                    "surface-bright": "#fdf8f6",
+                    "on-secondary-fixed-variant": "#00497d",
+                    "status-error": "#A4262C",
+                    "azure-blue": "#0078D4",
+                    "surface-container-high": "#ece7e4",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#a3c9ff",
+                    "border-gray": "#EDEBE9",
+                    "tertiary-fixed": "#ffdbc8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "container-max": "1440px",
+                    "margin-desktop": "24px"
+            },
+            "fontFamily": {
+                    "display": ["Inter"],
+                    "body-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "title": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "mono": ["JetBrains Mono"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      body { background-color: #fdf8f6; font-family: 'Inter', sans-serif; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      .wave-canvas { height: 60px; width: 100%; }
+      .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(237, 235, 233, 0.8); }
+      .terminal-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+      .quantum-glow { box-shadow: 0 0 20px rgba(0, 120, 212, 0.15); }
+      .status-pill { padding: 2px 8px; border-radius: 2px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full h-12 z-50 flex items-center px-4 justify-between bg-primary dark:bg-surface-container-highest shadow-sm">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-primary">menu</span>
+<div class="flex items-center gap-2">
+<span class="font-title text-title text-on-primary">qmfiresearch | Quantum Node</span>
+</div>
+<div class="ml-6 flex gap-2">
+<div class="status-pill bg-on-primary-container text-primary-container">
+<span class="material-symbols-outlined text-[14px]">terminal</span> Python 3.13
+                </div>
+<div class="status-pill bg-status-success text-white">
+<span class="material-symbols-outlined text-[14px]">memory</span> HW-Accelerated
+                </div>
+</div>
+</div>
+<div class="flex-1 max-w-xl mx-8">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-primary/60 text-[20px]">search</span>
+<input class="w-full bg-white/10 border-none rounded-lg py-1 pl-10 pr-4 text-on-primary placeholder:text-on-primary/60 focus:ring-1 focus:ring-on-primary/40 text-body-md font-body-md" placeholder="Search architecture manifests..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-1 hover:bg-primary-container/20 transition-colors duration-150 rounded text-on-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-1 hover:bg-primary-container/20 transition-colors duration-150 rounded text-on-primary">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-1 hover:bg-primary-container/20 transition-colors duration-150 rounded text-on-primary">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-on-primary/20 bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a senior system architect in a high-tech corporate office environment, soft cinematic lighting, neutral business attire, light-mode corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZhP77fNbcN9oQoeezi85xFg_5FusHVD5VIGli6Gx87SjAW5wx74L1DldK-gFRY-kOJODknxdibsJAM5wsCciXlrF8UoeqIWmQ002WwtQKwr0tky0dGtsxwg9RoMG9d4W5nlegvS4Et__vCMp4Ge06C3P4s_FVQ-IvZOHuUa18adwEuxmdl11V3BJHpa9x7qY1fnyBv-El-Oxz5oibio6jecym04EFXeJ78qpngt8bvk-NgNbJobhJ99BpnQe4nbYlwQUtQ_imV6ep"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 bottom-0 w-60 flex flex-col pt-4 pb-8 z-40 bg-surface dark:bg-surface-dim border-r border-border-gray dark:border-outline-variant">
+<div class="px-6 mb-6">
+<h2 class="font-title text-title text-on-surface">M365 Admin</h2>
+<p class="text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">Enterprise Console</p>
+</div>
+<nav class="flex-1">
+<div class="space-y-1">
+<a class="flex items-center px-6 py-2 gap-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Overview</span>
+</a>
+<a class="flex items-center px-6 py-2 gap-3 bg-secondary-fixed dark:bg-on-secondary-fixed-variant text-on-secondary-fixed font-bold border-l-4 border-azure-blue" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-body-md text-body-md">Quantum Diags</span>
+</a>
+<a class="flex items-center px-6 py-2 gap-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">cloud</span>
+<span class="font-body-md text-body-md">Storage</span>
+</a>
+<a class="flex items-center px-6 py-2 gap-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+<a class="flex items-center px-6 py-2 gap-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-md text-body-md">AI Assistant</span>
+</a>
+</div>
+</nav>
+<div class="px-6 pt-4 border-t border-border-gray">
+<a class="flex items-center py-2 gap-3 text-on-surface-variant hover:bg-surface-gray transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-60 mr-80 mt-12 p-6 overflow-y-auto h-[calc(100vh-48px)]">
+<header class="mb-6 flex justify-between items-end">
+<div>
+<nav class="flex text-[11px] text-on-surface-variant mb-1 gap-2 font-medium">
+<span>ARCH</span> <span class="text-outline">/</span> <span>SYSTEM_NODE_01</span> <span class="text-outline">/</span> <span class="text-primary">CORE_ARCHITECTURE</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Quantum System Architecture</h1>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded text-body-md font-medium hover:bg-primary/90 transition-colors shadow-sm">Execute Re-sync</button>
+<button class="border border-border-gray bg-white text-on-surface px-4 py-1.5 rounded text-body-md font-medium hover:bg-surface-gray transition-colors">Export Logs</button>
+</div>
+</header>
+<!-- Technical Visualization -->
+<section class="glass-card rounded-xl p-8 mb-6 overflow-hidden relative quantum-glow">
+<div class="absolute inset-0 opacity-5 pointer-events-none">
+<div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,#0078d4,transparent_70%)]"></div>
+</div>
+<div class="flex justify-between items-center relative z-10">
+<div class="flex flex-col items-center gap-4 group">
+<div class="w-20 h-20 bg-surface-container-low rounded-lg border-2 border-primary-container/40 flex items-center justify-center group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary text-4xl">description</span>
+</div>
+<span class="font-mono text-[12px] font-bold text-on-surface">MANIFEST (JSON)</span>
+</div>
+<div class="flex-1 h-px bg-gradient-to-r from-primary-container via-status-success to-primary-container relative mx-4">
+<div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-status-success rounded-full animate-ping"></div>
+</div>
+<div class="flex flex-col items-center gap-4 group">
+<div class="w-24 h-24 bg-surface-container-low rounded-full border-2 border-status-success/40 flex items-center justify-center group-hover:border-status-success transition-colors">
+<span class="material-symbols-outlined text-status-success text-5xl">hub</span>
+</div>
+<span class="font-mono text-[12px] font-bold text-on-surface">KERNEL_BRIDGE</span>
+</div>
+<div class="flex-1 h-px bg-gradient-to-r from-primary-container via-status-success to-primary-container relative mx-4">
+<div class="absolute -top-1.5 left-1/3 -translate-x-1/2 w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<div class="flex flex-col items-center gap-4 group">
+<div class="w-20 h-20 bg-surface-container-low rounded-lg border-2 border-azure-blue/40 flex items-center justify-center group-hover:border-azure-blue transition-colors">
+<span class="material-symbols-outlined text-azure-blue text-4xl">view_in_ar</span>
+</div>
+<span class="font-mono text-[12px] font-bold text-on-surface">PAYLOAD HORIZON</span>
+</div>
+</div>
+<div class="mt-8 text-center">
+<p class="text-caption text-on-surface-variant font-mono tracking-tighter">LATENCY_STABILITY: 0.004ms | FLOW_RATE: 4.2 Tbps | ENTROPY_LOSS: &lt; 0.001%</p>
+</div>
+</section>
+<!-- Logical Coherence Dashboard -->
+<div class="grid grid-cols-12 gap-6 mb-6">
+<section class="col-span-8 glass-card rounded-xl p-6">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-title text-title text-on-surface">Logical Coherence</h3>
+<p class="text-body-md text-on-surface-variant">Real-time wave-function synchronization</p>
+</div>
+<div class="text-right">
+<div class="font-mono text-primary font-bold text-lg">FI = ∫{t₀}^{t{end}} (L_C)/(H_E + 1) dt</div>
+<div class="status-pill bg-primary-fixed text-on-primary-fixed-variant self-end mt-2">COHERENCE: 0.9984σ</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg border border-border-gray p-4 h-48 relative overflow-hidden">
+<canvas class="wave-canvas absolute inset-0 w-full h-full" id="waveCanvas"></canvas>
+<div class="absolute inset-0 flex flex-col justify-between p-4 pointer-events-none">
+<div class="flex justify-between text-[10px] font-mono text-outline">
+<span>+1.0 Ψ</span>
+<span>PEAK_STATE: READY</span>
+</div>
+<div class="flex justify-between text-[10px] font-mono text-outline">
+<span>-1.0 Ψ</span>
+<span>BASELINE: NOMINAL</span>
+</div>
+</div>
+</div>
+</section>
+<section class="col-span-4 glass-card rounded-xl p-6 flex flex-col justify-between">
+<div>
+<h3 class="font-title text-title text-on-surface mb-2">Metrics Hub</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Substrate Temp</span>
+<span class="font-mono font-bold text-on-surface">2.4 K</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-azure-blue h-full w-[12%]"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Qubit Stability</span>
+<span class="font-mono font-bold text-on-surface">99.9%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-status-success h-full w-[99%]"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Entropy Flux</span>
+<span class="font-mono font-bold text-on-surface">14 mJ</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-status-warning h-full w-[45%]"></div>
+</div>
+</div>
+</div>
+<button class="w-full py-2 bg-surface-gray text-on-surface font-medium rounded text-body-md mt-4 border border-border-gray hover:bg-surface-container-high transition-colors">Detail Report</button>
+</section>
+</div>
+<!-- Structural Flow Table -->
+<section class="glass-card rounded-xl overflow-hidden mb-6">
+<div class="px-6 py-4 border-b border-border-gray bg-white/50">
+<h3 class="font-title text-title text-on-surface">Structural Flow (Byte-Stream)</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-6 py-3 text-label-md font-label-md text-outline uppercase tracking-wider">Descriptor</th>
+<th class="px-6 py-3 text-label-md font-label-md text-outline uppercase tracking-wider">Topological Manifest</th>
+<th class="px-6 py-3 text-label-md font-label-md text-outline uppercase tracking-wider">Binary Corpus</th>
+<th class="px-6 py-3 text-label-md font-label-md text-outline uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-gray">
+<tr class="hover:bg-surface-gray/30 transition-colors">
+<td class="px-6 py-4 font-mono text-[13px] text-primary">DESC_Q_001</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Lattice_Structure_Alpha</td>
+<td class="px-6 py-4 font-mono text-caption text-on-surface-variant">0x4F2A...11B9</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-status-success/10 text-status-success w-fit">SYNCED</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-gray/30 transition-colors">
+<td class="px-6 py-4 font-mono text-[13px] text-primary">DESC_Q_002</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Hilbert_Space_Map_V4</td>
+<td class="px-6 py-4 font-mono text-caption text-on-surface-variant">0x88BC...EE21</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-status-success/10 text-status-success w-fit">SYNCED</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-gray/30 transition-colors">
+<td class="px-6 py-4 font-mono text-[13px] text-primary">DESC_Q_003</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Tensor_Field_Propagator</td>
+<td class="px-6 py-4 font-mono text-caption text-on-surface-variant">0x1102...AB67</td>
+<td class="px-6 py-4">
+<span class="status-pill bg-status-warning/10 text-status-warning w-fit">PENDING</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Right Sidebar (Assistant) -->
+<aside class="fixed right-0 top-12 bottom-0 w-80 bg-white border-l border-border-gray z-40 flex flex-col">
+<div class="p-6 border-b border-border-gray">
+<div class="flex items-center gap-3 mb-4">
+<div class="h-10 w-10 bg-primary-fixed rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">cognition</span>
+</div>
+<div>
+<h3 class="font-title text-title text-on-surface">NatureLM-Idun-5-MoE</h3>
+<p class="text-[11px] text-status-success font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-status-success rounded-full"></span> SYSTEM ONLINE
+                    </p>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<div class="bg-surface-container-lowest rounded-lg p-3 border border-border-gray shadow-sm">
+<p class="text-body-md text-on-surface-variant italic mb-2">"Delta-Node-Active. Binary Weights (TQ4) loaded into S20 FE Substrate. Architecture verification complete."</p>
+<div class="flex justify-between items-center mt-2 border-t border-border-gray pt-2">
+<span class="text-[10px] text-outline font-mono">14:02:11 GMT</span>
+<button class="text-primary text-[11px] font-bold">Details</button>
+</div>
+</div>
+<div class="space-y-2">
+<h4 class="text-label-md font-label-md text-outline px-2 uppercase">Technical Logs</h4>
+<div class="terminal-text bg-inverse-surface text-on-primary p-3 rounded-lg overflow-x-hidden leading-relaxed">
+<div class="flex gap-2">
+<span class="text-status-success">[INFO]</span>
+<span>Initializing S20 FE core...</span>
+</div>
+<div class="flex gap-2">
+<span class="text-status-success">[OK]</span>
+<span>Weights TQ4 mapped.</span>
+</div>
+<div class="flex gap-2">
+<span class="text-status-warning">[WARN]</span>
+<span>Substrate drift at 0.2%</span>
+</div>
+<div class="flex gap-2">
+<span class="text-azure-blue">[EXEC]</span>
+<span>Running kernel_bridge...</span>
+</div>
+<div class="animate-pulse">_</div>
+</div>
+</div>
+<div class="bg-surface-gray rounded-lg p-4 border border-border-gray">
+<h4 class="font-title text-[13px] text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">bolt</span> Suggested Actions
+                </h4>
+<div class="space-y-2">
+<button class="w-full text-left p-2 rounded bg-white border border-border-gray text-body-md text-on-surface hover:border-primary transition-all">Optimize Wave Sync</button>
+<button class="w-full text-left p-2 rounded bg-white border border-border-gray text-body-md text-on-surface hover:border-primary transition-all">Flush Binary Corpus</button>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-border-gray">
+<div class="relative">
+<textarea class="w-full bg-surface-gray border-none rounded-lg p-3 pr-10 text-body-md resize-none focus:ring-1 focus:ring-primary" placeholder="Ask Idun-5 anything..." rows="2"></textarea>
+<button class="absolute right-2 bottom-3 p-1.5 bg-primary text-on-primary rounded">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</aside>
+<script>
+        const canvas = document.getElementById('waveCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resize() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        let offset = 0;
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(0,0,0,0.03)';
+            ctx.beginPath();
+            for(let i=0; i<canvas.width; i+=40) {
+                ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height);
+            }
+            for(let i=0; i<canvas.height; i+=40) {
+                ctx.moveTo(0, i); ctx.lineTo(canvas.width, i);
+            }
+            ctx.stroke();
+
+            // Draw wave
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#0078D4';
+            
+            const amplitude = 30;
+            const frequency = 0.01;
+            const centerY = canvas.height / 2;
+
+            ctx.moveTo(0, centerY);
+            for(let x = 0; x < canvas.width; x++) {
+                const y = centerY + Math.sin(x * frequency + offset) * amplitude + Math.sin(x * frequency * 2 + offset * 0.5) * (amplitude/2);
+                ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Gradient fill under wave
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.lineTo(0, canvas.height);
+            const gradient = ctx.createLinearGradient(0, centerY, 0, canvas.height);
+            gradient.addColorStop(0, 'rgba(0, 120, 212, 0.1)');
+            gradient.addColorStop(1, 'rgba(0, 120, 212, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            offset += 0.05;
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body></html>

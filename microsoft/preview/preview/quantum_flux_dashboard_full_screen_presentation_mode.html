@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quantum Flux Monitor | Expo 2027 Presentation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@450&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#fcf9f8",
+                        "surface-dim": "#dcd9d9",
+                        "surface-bright": "#fcf9f8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container": "#f0edec",
+                        "surface-container-high": "#ebe7e7",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-surface": "#1c1b1b",
+                        "on-surface-variant": "#4b4451",
+                        "outline": "#7c7482",
+                        "outline-variant": "#cdc3d3",
+                        "primary": "#5c2d91",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#efdbff",
+                        "on-primary-container": "#2a0053",
+                        "secondary": "#0060ab",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#d3e3ff",
+                        "on-secondary-container": "#001c39",
+                        "tertiary": "#2f3131",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "background": "#fcf9f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "grid-pattern-size": "32px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "code-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "code-md": ["14px", {"lineHeight": "22px", "fontWeight": "450"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .grid-bg {
+            background-image: linear-gradient(#f0edec 1px, transparent 1px), linear-gradient(90deg, #f0edec 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cdc3d3; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(0.98); }
+        }
+        .animate-pulse-soft { animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+
+        .terminal-bg {
+            background-color: #1a1c1c;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: currentColor;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<main class="grid-bg min-h-screen">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-gutter py-20">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+<div class="lg:col-span-5 space-y-8">
+<div class="inline-flex items-center gap-2.5 px-4 py-1.5 bg-primary-container text-on-primary-container rounded-full text-label-caps font-label-caps">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+                    EXPO 2027 TELEMETRY ACTIVE
+                </div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface">Neural Architecture Visualization</h1>
+<p class="font-body-md text-on-surface-variant max-w-lg leading-relaxed">
+                    Deploy, monitor, and scale specialized agents with the Quantum Flux architecture. Precision-engineered for academic reliability and enterprise throughput.
+                </p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded font-label-caps text-label-caps flex items-center gap-2 hover:translate-x-1 transition-all group">
+                        Initialize Registry <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded shadow-sm overflow-hidden">
+<div class="bg-surface-container flex items-center justify-between px-6 py-3 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-error/40"></div>
+<div class="w-3 h-3 rounded-full bg-secondary/40"></div>
+<div class="w-3 h-3 rounded-full bg-outline-variant"></div>
+</div>
+<span class="ml-4 font-code-md text-body-sm text-on-surface-variant">agent_init.py</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-body-sm font-label-caps text-on-surface-variant opacity-60">Python 3.11</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant cursor-pointer hover:text-primary transition-colors">content_copy</span>
+</div>
+</div>
+<div class="p-8 font-code-md text-code-md bg-white overflow-x-auto">
+<pre class="text-on-surface-variant"><span class="text-primary">from</span> flux_quantum <span class="text-primary">import</span> Monitor, AgentFactory
+
+<span class="text-outline"># Initialize the High-Precision Telemetry</span>
+monitor = Monitor(endpoint=<span class="text-secondary">"https://core.quantum.flux/v1"</span>)
+
+<span class="text-outline"># Call a deployed NatureLM-Idun-5-MoE agent</span>
+agent = AgentFactory.initialize(
+    model_id=<span class="text-secondary">"NatureLM-Idun-5-MoE"</span>,
+    role=<span class="text-secondary">"environment_specialist"</span>,
+    parameters={<span class="text-secondary">"temperature"</span>: 0.05}
+)
+
+<span class="text-primary">def</span> <span class="text-primary">handle_telemetry_flux</span>(data):
+    response = agent.execute(prompt=f<span class="text-secondary">"Analyze flux density: {data.flux}"</span>)
+    monitor.log_system_state(response.telemetry_digest)
+    <span class="text-primary">return</span> response.output_text</pre>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid -->
+<section class="max-w-container-max mx-auto px-gutter pb-24">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Spectral Oscillation -->
+<div class="md:col-span-2 bg-white border border-outline-variant flex flex-col overflow-hidden hover:shadow-lg transition-shadow group">
+<div class="p-8 border-b border-outline-variant bg-surface-container-lowest flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div>
+<h3 class="font-headline-lg text-headline-lg mb-1">Spectral Oscillation</h3>
+<p class="font-body-sm text-on-surface-variant font-medium">ACTIVE MODEL: NATURELM-IDUN-5-MOE</p>
+</div>
+<div class="text-left md:text-right">
+<span class="font-headline-lg text-[40px] text-primary block leading-none tabular-nums tracking-tighter" id="freq-display">1,402 THz</span>
+<p class="text-body-sm font-label-caps text-on-surface-variant mt-2">CURRENT FREQUENCY</p>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row flex-grow min-h-[440px] relative bg-white">
+<div class="flex-grow relative overflow-hidden flex items-center justify-center">
+<canvas class="absolute inset-0 w-full h-full" id="shader-canvas-spectral"></canvas>
+</div>
+<div class="lg:w-56 bg-surface-container-low border-t lg:border-t-0 lg:border-l border-outline-variant p-8 flex flex-row lg:flex-col justify-between lg:justify-start gap-10 z-10">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">STABILITY</span>
+</div>
+<span class="font-bold text-[20px] tabular-nums">99.8%</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">LATENCY</span>
+</div>
+<span class="font-bold text-[20px] tabular-nums">14ms</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">COHERENCE</span>
+</div>
+<span class="font-bold text-[20px] tabular-nums">0.92</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Procedural Spatial Heatmap -->
+<div class="bg-white border border-outline-variant p-8 flex flex-col hover:shadow-lg transition-shadow">
+<div class="flex justify-between items-start mb-8">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant tracking-widest">SPATIAL HEATMAP</h3>
+<div class="text-[10px] font-code-md text-on-surface-variant bg-surface-container px-2 py-0.5 rounded" id="coord-overlay">X: --, Y: --</div>
+</div>
+<div class="flex-grow relative border border-outline-variant/20 rounded overflow-hidden bg-surface-container-low group/canvas min-h-[200px]">
+<!-- Canvas for Heatmap or Placeholder -->
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
+<canvas class="absolute inset-0 w-full h-full cursor-crosshair" id="heatmap-canvas"></canvas>
+<div class="absolute bottom-4 left-4 right-4 pointer-events-none opacity-0 group-hover/canvas:opacity-100 transition-opacity">
+<div class="text-[9px] font-label-caps text-primary bg-white/80 backdrop-blur px-2 py-1 rounded-sm border border-primary/20">PROCEDURAL RENDER ACTIVE</div>
+</div>
+</div>
+<div class="mt-8 space-y-6">
+<div class="flex justify-between items-center text-[10px] font-label-caps text-on-surface-variant">
+<span>DENSITY: LOW</span>
+<div class="flex gap-1.5">
+<div class="w-4 h-2 bg-primary/10"></div>
+<div class="w-4 h-2 bg-primary/40"></div>
+<div class="w-4 h-2 bg-primary/70"></div>
+<div class="w-4 h-2 bg-primary"></div>
+</div>
+<span>HIGH</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-body-sm">
+<span class="font-label-caps text-on-surface-variant">Cluster DENSITY</span>
+<span class="font-bold tabular-nums text-primary" id="density-indicator">0.84 ρ</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary w-[84%] h-full rounded-full transition-all duration-700" id="density-progress"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Terminal Log -->
+<div class="md:col-span-3 terminal-bg text-on-tertiary-container p-8 rounded shadow-xl border border-outline/30 relative overflow-hidden h-[300px]">
+<div class="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">terminal</span>
+<span class="font-label-caps text-label-caps text-white tracking-widest uppercase">system_log / telemetry_stream</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+<span class="text-[10px] font-bold text-emerald-400 font-label-caps">LIVE FEED</span>
+</div>
+<span class="text-body-sm text-surface-container-highest font-code-md tabular-nums opacity-60" id="uptime-clock">UPTIME: 1,482:12:04</span>
+</div>
+</div>
+<div class="font-code-md text-[13px] h-[180px] overflow-y-auto custom-scrollbar space-y-1.5 text-white/70" id="terminal-output">
+<!-- Logs injected via JS -->
+<div class="inline-block w-full" id="log-content"></div>
+<div class="inline-block" id="cursor-line"><span class="cursor-blink text-primary-container">_</span></div>
+</div>
+<div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-primary/5 to-transparent"></div>
+</div>
+</div>
+</section>
+<!-- Metrics Strip -->
+<section class="border-t border-outline-variant bg-surface-container-low/50 py-16">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-2 md:grid-cols-4 gap-12">
+<div class="space-y-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">QUERIES / SEC</p>
+<h4 class="font-headline-lg text-[28px] font-bold text-primary tabular-nums">48.2K</h4>
+</div>
+<div class="space-y-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">FLUX ERRORS</p>
+<h4 class="font-headline-lg text-[28px] font-bold text-error tabular-nums">0.001%</h4>
+</div>
+<div class="space-y-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">CONNECTED AGENTS</p>
+<h4 class="font-headline-lg text-[28px] font-bold text-on-surface tabular-nums">3.4M</h4>
+</div>
+<div class="space-y-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">DATA INGESTION</p>
+<h4 class="font-headline-lg text-[28px] font-bold text-secondary tabular-nums">82 PB</h4>
+</div>
+</div>
+</section>
+</main>
+<script>
+    // 1. WebGL Spectral Oscillation (ANIMATION_17)
+    (function() {
+        const canvas = document.getElementById('shader-canvas-spectral');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (!gl) return;
+
+        function syncSize() {
+            const w = canvas.clientWidth;
+            const h = canvas.clientHeight;
+            if (canvas.width !== w || canvas.height !== h) {
+                canvas.width = w;
+                canvas.height = h;
+            }
+        }
+        window.addEventListener('resize', syncSize);
+        syncSize();
+
+        const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+        const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 mouse = u_mouse / u_resolution;
+    vec2 p = uv * 2.0 - 1.0;
+    p.x *= u_resolution.x / u_resolution.y;
+
+    vec3 color = vec3(0.988, 0.976, 0.972);
+    float spectralIntensity = 0.0;
+    
+    for(float i = 1.0; i < 8.0; i++) {
+        float speed = u_time * (0.2 + i * 0.1);
+        float freq = 2.0 + i * 1.5;
+        float amp = 0.15 / i;
+        float distToMouse = length(uv - mouse);
+        float mouseInfluence = smoothstep(0.5, 0.0, distToMouse) * 0.5;
+        float wave = sin(uv.x * freq + speed + mouseInfluence * 5.0) * amp;
+        float line = abs(uv.y - 0.5 - wave);
+        float thickness = 0.002 + (1.0 - uv.x) * 0.003;
+        spectralIntensity += smoothstep(thickness, 0.0, line) * (1.0 - uv.x * 0.5);
+    }
+
+    vec3 waveColor = vec3(0.36, 0.176, 0.568);
+    color = mix(color, waveColor, spectralIntensity * 0.8);
+    
+    float grid = 0.0;
+    grid += smoothstep(0.495, 0.5, abs(fract(uv.x * 20.0) - 0.5)) * 0.05;
+    grid += smoothstep(0.495, 0.5, abs(fract(uv.y * 10.0) - 0.5)) * 0.05;
+    color -= grid;
+
+    gl_FragColor = vec4(color, 1.0);
+}`;
+
+        function cs(type, src) {
+            const s = gl.createShader(type);
+            gl.shaderSource(s, src);
+            gl.compileShader(s);
+            return s;
+        }
+
+        const prog = gl.createProgram();
+        gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+        gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+        gl.linkProgram(prog);
+        gl.useProgram(prog);
+
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+        const pos = gl.getAttribLocation(prog, 'a_position');
+        gl.enableVertexAttribArray(pos);
+        gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+        const uTime = gl.getUniformLocation(prog, 'u_time');
+        const uRes = gl.getUniformLocation(prog, 'u_resolution');
+        const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+        let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * canvas.width;
+            mouse.y = (1.0 - (e.clientY - rect.top) / rect.height) * canvas.height;
+        });
+
+        function render(t) {
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.uniform1f(uTime, t * 0.001);
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+            gl.uniform2f(uMouse, mouse.x, mouse.y);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            requestAnimationFrame(render);
+        }
+        render(0);
+    })();
+
+    // 2. Interactive Terminal with Typewriter & Auto-scroll
+    (function() {
+        const output = document.getElementById('log-content');
+        const terminal = document.getElementById('terminal-output');
+        const events = [
+            "INFO: Buffer stream synchronized with main thread.",
+            "DEBUG: Flux variance detected at node cluster-beta.",
+            "EVENT: Handshake protocol completed successfully.",
+            "TRACE: Garbage collection executed in 2.4ms.",
+            "INFO: NatureLM response latency: 11.2ms.",
+            "DEBUG: Packet injection rate optimized (+4.2%).",
+            "WARN: Entropy threshold approached at sector 7G.",
+            "EVENT: New peer connection from 192.168.1.104:443.",
+            "TRACE: Distributed tensor merge in progress...",
+            "INFO: Telemetry packet digest: 0x82FA...21"
+        ];
+
+        async function typeLine(text) {
+            const now = new Date();
+            const time = `[${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(Math.floor(Math.random() * 99)).padStart(2, '0')}]`;
+            
+            const p = document.createElement('p');
+            p.className = "flex gap-2";
+            const timeSpan = document.createElement('span');
+            timeSpan.className = "text-primary-container opacity-60 flex-shrink-0";
+            timeSpan.textContent = time;
+            
+            const textSpan = document.createElement('span');
+            if (text.includes('EVENT')) textSpan.className = "text-secondary-container";
+            else if (text.includes('WARN')) textSpan.className = "text-error";
+            
+            p.appendChild(timeSpan);
+            p.appendChild(textSpan);
+            output.appendChild(p);
+
+            for (let char of text) {
+                textSpan.textContent += char;
+                terminal.scrollTop = terminal.scrollHeight;
+                await new Promise(r => setTimeout(r, 10 + Math.random() * 20));
+            }
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        async function logLoop() {
+            while(true) {
+                const entry = events[Math.floor(Math.random() * events.length)];
+                await typeLine(entry);
+                if (output.children.length > 50) output.removeChild(output.firstChild);
+                await new Promise(r => setTimeout(r, 1000 + Math.random() * 2000));
+            }
+        }
+        logLoop();
+    })();
+
+    // 3. Heatmap Interaction
+    (function() {
+        const heatmap = document.getElementById('heatmap-canvas');
+        const coordOverlay = document.getElementById('coord-overlay');
+        const densityIndicator = document.getElementById('density-indicator');
+        const densityProgress = document.getElementById('density-progress');
+
+        heatmap.addEventListener('mousemove', (e) => {
+            const rect = heatmap.getBoundingClientRect();
+            const xPercent = (e.clientX - rect.left) / rect.width;
+            const yPercent = (e.clientY - rect.top) / rect.height;
+            coordOverlay.textContent = `X: ${Math.floor(xPercent * 100)}, Y: ${Math.floor(yPercent * 100)}`;
+            const fluctuation = (0.75 + Math.random() * 0.2).toFixed(2);
+            densityIndicator.textContent = `${fluctuation} ρ`;
+            densityProgress.style.width = `${fluctuation * 100}%`;
+        });
+        heatmap.addEventListener('mouseleave', () => {
+            coordOverlay.textContent = 'X: --, Y: --';
+        });
+    })();
+
+    // 4. Uptime Clock
+    (function() {
+        let totalSecs = 1482 * 3600 + 12 * 60 + 4;
+        const uptimeEl = document.getElementById('uptime-clock');
+        setInterval(() => {
+            totalSecs++;
+            const h = Math.floor(totalSecs / 3600);
+            const m = Math.floor((totalSecs % 3600) / 60);
+            const s = totalSecs % 60;
+            uptimeEl.textContent = `UPTIME: ${h.toLocaleString()}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }, 1000);
+    })();
+</script>
+</body></html>

@@ -1,0 +1,6 @@
+# Sentinel Journal - Security Learnings
+
+## 2026-07-29 - DOM-based Cross-Site Scripting (XSS) in Client-Side Interactive Prototype
+**Vulnerability:** In `azure_ai_studio_stitch_sdk_integration_desktop.html`, user input from an HTML `<textarea>` element was directly read via JavaScript (`textarea.value`) and appended into the chat DOM container via innerHTML interpolation (`${textarea.value}`) without any sanitization or escaping. This would allow an attacker or test input containing HTML tags, scripts, or malicious handlers (like `<img src=x onerror=...>` or `<script>`) to execute arbitrary script code within the user's browser.
+**Learning:** Even in purely client-side templates, interactive prototypes, mockups, or static demonstration pages (such as HTML pages served via GitHub Pages), standard security boundaries apply. Relying on `.innerHTML` to insert raw user inputs is a common security gap in quickly built HTML templates.
+**Prevention:** Always sanitize or HTML-escape any user input before rendering it inside the DOM if utilizing `.innerHTML` or `.insertAdjacentHTML`. In static templates where third-party sanitization libraries are not loaded, implement a clean, lightweight HTML-escaping function to convert special characters (`&`, `<`, `>`, `"`, `'`) to their corresponding HTML entity equivalents.

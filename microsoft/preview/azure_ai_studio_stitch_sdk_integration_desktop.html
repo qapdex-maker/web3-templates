@@ -264,7 +264,7 @@
 <div class="p-lg border-t border-border-subtle bg-surface-container-lowest">
 <div class="relative">
 <textarea class="w-full p-lg pr-16 bg-surface-white border border-border-subtle rounded-xl text-body-md focus:ring-2 focus:ring-azure-blue resize-none h-24" placeholder="Describe the UI you want to generate..."></textarea>
-<button class="absolute right-md bottom-md p-md bg-azure-blue text-white rounded-lg hover:opacity-90 transition-all">
+<button id="send-prompt-btn" class="absolute right-md bottom-md p-md bg-azure-blue text-white rounded-lg hover:opacity-90 transition-all">
 <span class="material-symbols-outlined">send</span>
 </button>
 </div>
@@ -373,8 +373,21 @@
 </main>
 </div>
 <script>
+        // Helper to escape HTML characters and prevent Cross-Site Scripting (XSS)
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g,
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
         // Lightweight interaction for terminal/chat feeling
-        document.querySelector('button.bg-azure-blue').addEventListener('click', function() {
+        document.getElementById('send-prompt-btn').addEventListener('click', function() {
             const textarea = document.querySelector('textarea');
             if (textarea.value.trim() !== "") {
                 const chatContainer = document.querySelector('.custom-scrollbar .space-y-md');
@@ -387,7 +400,7 @@
                         <span class="material-symbols-outlined text-white text-[18px]">person</span>
                     </div>
                     <div class="bg-surface-container-low p-md rounded-lg max-w-[85%]">
-                        <p class="font-body-md text-body-md">${textarea.value}</p>
+                        <p class="font-body-md text-body-md">${escapeHTML(textarea.value)}</p>
                     </div>
                 `;
                 chatContainer.appendChild(userMsg);

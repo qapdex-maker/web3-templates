@@ -373,21 +373,22 @@
 </main>
 </div>
 <script>
-        // Helper to escape HTML characters and prevent Cross-Site Scripting (XSS)
+        // Securely escape user input to prevent DOM-based XSS
         function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g,
-                tag => ({
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    "'": '&#39;',
-                    '"': '&quot;'
-                }[tag] || tag)
-            );
+            return str.replace(/[&<>"']/g, function(m) {
+                switch (m) {
+                    case '&': return '&amp;';
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '"': return '&quot;';
+                    case "'": return '&#039;';
+                    default: return m;
+                }
+            });
         }
 
         // Lightweight interaction for terminal/chat feeling
-        document.getElementById('send-prompt-btn').addEventListener('click', function() {
+        document.querySelector('button.bg-azure-blue.absolute').addEventListener('click', function() {
             const textarea = document.querySelector('textarea');
             if (textarea.value.trim() !== "") {
                 const chatContainer = document.querySelector('.custom-scrollbar .space-y-md');

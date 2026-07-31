@@ -455,13 +455,71 @@
 </aside>
 </div>
 <script>
-        // Simple micro-interaction for the resonance logic
+        // Securely escape user input to prevent DOM-based XSS
+        function escapeHTML(str) {
+            return str.replace(/[&<>"']/g, function(m) {
+                switch (m) {
+                    case '&': return '&amp;';
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '"': return '&quot;';
+                    case "'": return '&#039;';
+                    default: return m;
+                }
+            });
+        }
+
+        // Send a message securely and trigger simulated AI response
+        function sendMessage() {
+            const textarea = document.querySelector('textarea');
+            const chatContainer = document.querySelector('.sidebar-chat');
+            const val = textarea.value.trim();
+            if (val !== "") {
+                // User Message (securely escaped user input to prevent DOM-based XSS)
+                const userMsg = document.createElement('div');
+                userMsg.className = 'flex justify-end gap-sm';
+                userMsg.innerHTML = `
+                    <div class="bg-surface-container-high p-3 rounded-xl rounded-tr-none border border-border-subtle max-w-[85%]">
+                        <p class="text-body-md text-text-primary">${escapeHTML(val)}</p>
+                    </div>
+                `;
+                chatContainer.appendChild(userMsg);
+
+                // Clear and reset textarea
+                textarea.value = '';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // Simulate AI Response with typing delay
+                setTimeout(() => {
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = 'flex gap-sm';
+                    aiMsg.innerHTML = `
+                        <div class="w-6 h-6 rounded-full bg-azure-blue flex-shrink-0 mt-1"></div>
+                        <div class="bg-azure-blue/5 p-3 rounded-xl rounded-tl-none border border-azure-blue/20">
+                            <p class="text-body-md text-text-primary">Understood. Proceeding with command execution and security logging. All telemetry systems remain nominal.</p>
+                        </div>
+                    `;
+                    chatContainer.appendChild(aiMsg);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // Send message on Enter key (without Shift)
         document.querySelector('textarea').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                this.value = '';
-                // Simulation response
+                sendMessage();
             }
         });
+
+        // Send message on button click
+        const sendBtn = document.querySelector('.relative button.text-azure-blue');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                sendMessage();
+            });
+        }
     </script>
 </body></html>

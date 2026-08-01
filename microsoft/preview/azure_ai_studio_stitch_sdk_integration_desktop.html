@@ -375,13 +375,15 @@
 <script>
         // Securely escape user input to prevent DOM-based XSS
         function escapeHTML(str) {
-            return str.replace(/[&<>"']/g, function(m) {
+            return str.replace(/[&<>"'`\/]/g, function(m) {
                 switch (m) {
                     case '&': return '&amp;';
                     case '<': return '&lt;';
                     case '>': return '&gt;';
                     case '"': return '&quot;';
                     case "'": return '&#039;';
+                    case '`': return '&#x60;';
+                    case '/': return '&#x2F;';
                     default: return m;
                 }
             });

@@ -395,9 +395,34 @@
 <span class="material-symbols-outlined text-[18px] cursor-pointer opacity-80 hover:opacity-100">more_horiz</span>
 </div>
 </div>
-<div class="flex-1 min-h-[500px]">
-<iframe src="https://webchat.botframework.com/embed/naturelm-idun-5-moe74629?s=YOUR_SECRET_HERE" style="width: 100%; height: 100%; min-height: 502px; border: none;" title="M365 Copilot Admin Assistant" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer">
-</iframe>
+<div class="flex-1 min-h-[500px] flex flex-col justify-between" id="ai-assistant-container">
+    <!-- Setup Screen (shown if no Bot Secret is saved) -->
+    <div id="webchat-setup-screen" class="p-6 flex flex-col items-center justify-center h-full text-center space-y-4">
+        <div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center text-azure-blue">
+            <span class="material-symbols-outlined text-[28px]">lock</span>
+        </div>
+        <h4 class="font-title text-title text-on-surface">Secure Assistant Activation</h4>
+        <p class="text-caption font-caption text-on-surface-variant max-w-[240px]">
+            To prevent accidental credential leaks, enter your Bot Framework Secret below. It will be saved locally in your browser's LocalStorage and is never saved to any server.
+        </p>
+        <div class="w-full max-w-xs relative">
+            <input id="bot-secret-input" type="password" placeholder="Enter Bot Secret" class="w-full bg-surface-gray border border-border-gray rounded px-3 py-1.5 text-body-md focus:ring-1 focus:ring-azure-blue" />
+        </div>
+        <button id="activate-bot-btn" class="bg-primary text-on-primary px-4 py-1.5 rounded-sm font-label-md text-label-md hover:brightness-110 transition-all w-full max-w-xs">
+            Activate Assistant
+        </button>
+    </div>
+
+    <!-- Active Webchat Screen -->
+    <div id="webchat-active-screen" class="hidden flex-1 h-full flex flex-col justify-between">
+        <div class="flex-1 h-full relative" id="iframe-target">
+            <!-- Dynamic Iframe will be injected here with correct sandbox & referrerpolicy -->
+        </div>
+        <div class="px-4 py-1.5 bg-surface-gray/50 border-t border-border-gray flex justify-between items-center text-caption font-caption text-on-surface-variant shrink-0">
+            <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-status-success"></span> Connection Secured Client-Side</span>
+            <button id="clear-bot-secret-btn" class="text-status-error hover:underline font-bold">Clear Token</button>
+        </div>
+    </div>
 </div>
 <div class="p-3 border-t border-border-gray bg-surface-gray/10">
 <p class="text-caption font-caption text-on-surface-variant text-center italic">
@@ -424,6 +449,73 @@
                     link.classList.remove('text-on-surface-variant');
                 });
             });
+
+            // Secure Token Activation Logic for Bot Framework Embed
+            function initBotFramework() {
+                const savedSecret = localStorage.getItem('m365_bot_secret');
+                const setupScreen = document.getElementById('webchat-setup-screen');
+                const activeScreen = document.getElementById('webchat-active-screen');
+                const iframeTarget = document.getElementById('iframe-target');
+
+                if (savedSecret) {
+                    setupScreen.classList.add('hidden');
+                    activeScreen.classList.remove('hidden');
+
+                    // Dynamically create iframe with secure sandbox & referrerpolicy attributes
+                    const iframe = document.createElement('iframe');
+                    iframe.id = 'webchat-iframe';
+                    iframe.src = `https://webchat.botframework.com/embed/naturelm-idun-5-moe74629?s=${encodeURIComponent(savedSecret)}`;
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.minHeight = '502px';
+                    iframe.style.border = 'none';
+                    iframe.title = 'M365 Copilot Admin Assistant';
+                    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+                    iframe.setAttribute('referrerpolicy', 'no-referrer');
+
+                    // Clear any existing iframe before appending
+                    iframeTarget.innerHTML = '';
+                    iframeTarget.appendChild(iframe);
+                } else {
+                    setupScreen.classList.remove('hidden');
+                    activeScreen.classList.add('hidden');
+                    iframeTarget.innerHTML = '';
+                }
+            }
+
+            const activateBtn = document.getElementById('activate-bot-btn');
+            const clearBtn = document.getElementById('clear-bot-secret-btn');
+            const secretInput = document.getElementById('bot-secret-input');
+
+            if (activateBtn) {
+                activateBtn.addEventListener('click', () => {
+                    const secret = secretInput.value.trim();
+                    if (secret) {
+                        localStorage.setItem('m365_bot_secret', secret);
+                        secretInput.value = '';
+                        initBotFramework();
+                    }
+                });
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    localStorage.removeItem('m365_bot_secret');
+                    initBotFramework();
+                });
+            }
+
+            // Also support enter key inside input
+            if (secretInput) {
+                secretInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        activateBtn.click();
+                    }
+                });
+            }
+
+            // Run on load
+            initBotFramework();
 
             // Console logging simulation
             console.log("Azure Dashboard Initialized in Preview Mode.");

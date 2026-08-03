@@ -348,7 +348,7 @@
 </div>
 </div>
 </div>
-<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<div id="sidebar-chat-container" class="flex-1 overflow-y-auto p-4 space-y-4">
 <div class="bg-surface-container-lowest rounded-lg p-3 border border-border-gray shadow-sm">
 <p class="text-body-md text-on-surface-variant italic mb-2">"Delta-Node-Active. Binary Weights (TQ4) loaded into S20 FE Substrate. Architecture verification complete."</p>
 <div class="flex justify-between items-center mt-2 border-t border-border-gray pt-2">
@@ -390,14 +390,81 @@
 </div>
 <div class="p-4 border-t border-border-gray">
 <div class="relative">
-<textarea class="w-full bg-surface-gray border-none rounded-lg p-3 pr-10 text-body-md resize-none focus:ring-1 focus:ring-primary" placeholder="Ask Idun-5 anything..." rows="2"></textarea>
-<button class="absolute right-2 bottom-3 p-1.5 bg-primary text-on-primary rounded">
+<textarea id="chat-textarea" class="w-full bg-surface-gray border-none rounded-lg p-3 pr-10 text-body-md resize-none focus:ring-1 focus:ring-primary" placeholder="Ask Idun-5 anything..." rows="2"></textarea>
+<button id="chat-send-btn" class="absolute right-2 bottom-3 p-1.5 bg-primary text-on-primary rounded hover:bg-primary/90 transition-colors">
 <span class="material-symbols-outlined text-[18px]">send</span>
 </button>
 </div>
 </div>
 </aside>
 <script>
+        // Secure escapeHTML utility to prevent DOM-based XSS
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"'`\/]/g, function(m) {
+                switch (m) {
+                    case '&': return '&amp;';
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '"': return '&quot;';
+                    case "'": return '&#039;';
+                    case '`': return '&#x60;';
+                    case '/': return '&#x2F;';
+                    default: return m;
+                }
+            });
+        }
+
+        // Sidebar Chat Interaction with Secure HTML Sanitization
+        const chatContainer = document.getElementById('sidebar-chat-container');
+        const textarea = document.getElementById('chat-textarea');
+        const sendBtn = document.getElementById('chat-send-btn');
+
+        function sendChatMessage() {
+            const val = textarea.value.trim();
+            if (val !== "") {
+                // User message (escaped securely)
+                const userMsg = document.createElement('div');
+                userMsg.className = 'flex justify-end gap-2';
+                userMsg.innerHTML = `
+                    <div class="bg-primary/10 p-3 rounded-xl rounded-tr-none border border-primary/20 max-w-[85%]">
+                        <p class="text-body-md text-on-surface">${escapeHTML(val)}</p>
+                    </div>
+                `;
+                chatContainer.appendChild(userMsg);
+
+                // Clear input
+                textarea.value = '';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // Simulate automated AI response with a short typing delay
+                setTimeout(() => {
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = 'flex gap-2';
+                    aiMsg.innerHTML = `
+                        <div class="h-6 w-6 rounded-full bg-primary-fixed flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-primary text-[14px]">cognition</span>
+                        </div>
+                        <div class="bg-surface-container-lowest p-3 rounded-xl rounded-tl-none border border-border-gray max-w-[85%] shadow-sm">
+                            <p class="text-body-md text-on-surface">Understood. Proceeding with quantum system architecture synchronization and log monitoring. All core parameters are nominal.</p>
+                        </div>
+                    `;
+                    chatContainer.appendChild(aiMsg);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        if (sendBtn && textarea) {
+            sendBtn.addEventListener('click', sendChatMessage);
+            textarea.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+            });
+        }
+
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
         

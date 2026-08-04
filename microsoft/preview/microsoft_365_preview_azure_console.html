@@ -406,7 +406,7 @@
             To prevent accidental credential leaks, enter your Bot Framework Secret below. It will be saved locally in your browser's LocalStorage and is never saved to any server.
         </p>
         <div class="w-full max-w-xs relative">
-            <input id="bot-secret-input" type="password" placeholder="Enter Bot Secret" class="w-full bg-surface-gray border border-border-gray rounded px-3 py-1.5 text-body-md focus:ring-1 focus:ring-azure-blue" />
+            <input id="bot-secret-input" type="password" maxlength="256" placeholder="Enter Bot Secret" class="w-full bg-surface-gray border border-border-gray rounded px-3 py-1.5 text-body-md focus:ring-1 focus:ring-azure-blue" />
         </div>
         <button id="activate-bot-btn" class="bg-primary text-on-primary px-4 py-1.5 rounded-sm font-label-md text-label-md hover:brightness-110 transition-all w-full max-w-xs">
             Activate Assistant
@@ -501,6 +501,9 @@
             if (clearBtn) {
                 clearBtn.addEventListener('click', () => {
                     localStorage.removeItem('m365_bot_secret');
+                    if (secretInput) {
+                        secretInput.value = '';
+                    }
                     initBotFramework();
                 });
             }

@@ -406,7 +406,8 @@
             To prevent accidental credential leaks, enter your Bot Framework Secret below. It will be saved locally in your browser's LocalStorage and is never saved to any server.
         </p>
         <div class="w-full max-w-xs relative">
-            <input id="bot-secret-input" type="password" maxlength="256" placeholder="Enter Bot Secret" class="w-full bg-surface-gray border border-border-gray rounded px-3 py-1.5 text-body-md focus:ring-1 focus:ring-azure-blue" />
+            <!-- autocomplete="new-password" prevents browser autocomplete caching of credentials in static shared pages -->
+            <input id="bot-secret-input" type="password" autocomplete="new-password" maxlength="256" placeholder="Enter Bot Secret" class="w-full bg-surface-gray border border-border-gray rounded px-3 py-1.5 text-body-md focus:ring-1 focus:ring-azure-blue" />
         </div>
         <button id="activate-bot-btn" class="bg-primary text-on-primary px-4 py-1.5 rounded-sm font-label-md text-label-md hover:brightness-110 transition-all w-full max-w-xs">
             Activate Assistant
@@ -460,6 +461,14 @@
                 if (savedSecret) {
                     setupScreen.classList.add('hidden');
                     activeScreen.classList.remove('hidden');
+
+                    // DEFENSE IN DEPTH: Explicitly wipe/clear any user input DOM values upon activation or load.
+                    // This mitigates risks associated with sensitive tokens lingering in the browser's active DOM/session memory,
+                    // especially if exposed to DOM inspection or potential XSS/leakage.
+                    const secretInput = document.getElementById('bot-secret-input');
+                    if (secretInput) {
+                        secretInput.value = '';
+                    }
 
                     // Dynamically create iframe with secure sandbox & referrerpolicy attributes
                     const iframe = document.createElement('iframe');

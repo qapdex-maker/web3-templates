@@ -451,6 +451,19 @@
                 });
             });
 
+            // Input Validation Regex (Alphanumeric, hyphens, underscores, dots, equals, slashes, pluses)
+            const SAFE_SECRET_REGEX = /^[A-Za-z0-9_\-\.\=\+\/]{1,256}$/;
+
+            function validateAndSanitizeSecret(secret) {
+                if (!secret) return null;
+                const trimmed = secret.trim();
+                // Check against regex for safe alphanumeric/base64/guid characters
+                if (!SAFE_SECRET_REGEX.test(trimmed)) {
+                    return null;
+                }
+                return trimmed;
+            }
+
             // Secure Token Activation Logic for Bot Framework Embed
             function initBotFramework() {
                 const savedSecret = localStorage.getItem('m365_bot_secret');
@@ -458,7 +471,9 @@
                 const activeScreen = document.getElementById('webchat-active-screen');
                 const iframeTarget = document.getElementById('iframe-target');
 
-                if (savedSecret) {
+                const validatedSecret = validateAndSanitizeSecret(savedSecret);
+
+                if (validatedSecret) {
                     setupScreen.classList.add('hidden');
                     activeScreen.classList.remove('hidden');
 
@@ -473,7 +488,7 @@
                     // Dynamically create iframe with secure sandbox & referrerpolicy attributes
                     const iframe = document.createElement('iframe');
                     iframe.id = 'webchat-iframe';
-                    iframe.src = `https://webchat.botframework.com/embed/naturelm-idun-5-moe74629?s=${encodeURIComponent(savedSecret)}`;
+                    iframe.src = `https://webchat.botframework.com/embed/naturelm-idun-5-moe74629?s=${encodeURIComponent(validatedSecret)}`;
                     iframe.style.width = '100%';
                     iframe.style.height = '100%';
                     iframe.style.minHeight = '502px';
@@ -486,6 +501,10 @@
                     iframeTarget.innerHTML = '';
                     iframeTarget.appendChild(iframe);
                 } else {
+                    // If secret was present but failed validation, remove it to prevent looping/poisoning
+                    if (savedSecret) {
+                        localStorage.removeItem('m365_bot_secret');
+                    }
                     setupScreen.classList.remove('hidden');
                     activeScreen.classList.add('hidden');
                     iframeTarget.innerHTML = '';
@@ -499,10 +518,14 @@
             if (activateBtn) {
                 activateBtn.addEventListener('click', () => {
                     const secret = secretInput.value.trim();
-                    if (secret) {
-                        localStorage.setItem('m365_bot_secret', secret);
+                    const validated = validateAndSanitizeSecret(secret);
+                    if (validated) {
+                        localStorage.setItem('m365_bot_secret', validated);
                         secretInput.value = '';
                         initBotFramework();
+                    } else {
+                        alert('Invalid Bot Secret format. Please enter a valid token (alphanumeric, hyphens, underscores, dots, or base64 format).');
+                        secretInput.value = '';
                     }
                 });
             }

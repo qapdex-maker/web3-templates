@@ -273,18 +273,8 @@
 </div>
 <div class="flex-1 flex flex-col items-center justify-center border border-outline-variant/20 bg-background/50 relative overflow-hidden">
 <div class="absolute inset-0 opacity-20">
-<div id="spatial-grid-pattern" class="grid grid-cols-10 grid-rows-10 h-full w-full">
-<!-- Simplified CSS grid for grid pattern -->
-<script>
-                                        const spatialGridPattern = document.getElementById('spatial-grid-pattern');
-                                        if (spatialGridPattern) {
-                                            for(let i=0; i<100; i++) {
-                                                const cell = document.createElement('div');
-                                                cell.className = 'border-[0.5px] border-outline-variant/10';
-                                                spatialGridPattern.appendChild(cell);
-                                            }
-                                        }
-                                    </script>
+<div class="grid grid-cols-10 grid-rows-10 h-full w-full" id="spatial-grid-pattern">
+<!-- Simplified CSS grid pattern generated via DOM manipulation -->
 </div>
 </div>
 
@@ -357,6 +347,16 @@
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
 </button>
 <script>
+        // Populate spatial grid pattern securely without document.write to follow CSP best practices
+        const gridPattern = document.getElementById('spatial-grid-pattern');
+        if (gridPattern) {
+            for (let i = 0; i < 100; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'border-[0.5px] border-outline-variant/10';
+                gridPattern.appendChild(cell);
+            }
+        }
+
         // Micro-interaction for terminal scrolling simulation
         const terminal = document.querySelector('.terminal-scroll');
         const logs = [

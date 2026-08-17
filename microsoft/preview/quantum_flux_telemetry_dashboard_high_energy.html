@@ -385,6 +385,23 @@
 </button>
 </footer>
 <script>
+        // Secure escapeHTML utility to prevent DOM-based XSS
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"'`\/]/g, function(m) {
+                switch (m) {
+                    case '&': return '&amp;';
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '"': return '&quot;';
+                    case "'": return '&#039;';
+                    case '`': return '&#x60;';
+                    case '/': return '&#x2F;';
+                    default: return m;
+                }
+            });
+        }
+
         // Terminal auto-scrolling simulation
         const logTerminal = document.getElementById('log-terminal');
         const prefixes = [
@@ -411,9 +428,9 @@
             const line = document.createElement('div');
             line.className = 'flex gap-4 opacity-0 transition-opacity duration-300';
             line.innerHTML = `
-                <span class="text-on-surface-variant/40">[${time}]</span>
-                <span class="${prefix.color}">${prefix.label}</span>
-                <span>${msg}</span>
+                <span class="text-on-surface-variant/40">[${escapeHTML(time)}]</span>
+                <span class="${escapeHTML(prefix.color)}">${escapeHTML(prefix.label)}</span>
+                <span>${escapeHTML(msg)}</span>
             `;
             
             logTerminal.appendChild(line);

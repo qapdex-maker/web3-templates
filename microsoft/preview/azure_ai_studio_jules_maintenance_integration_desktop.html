@@ -457,7 +457,8 @@
 <script>
         // Securely escape user input to prevent DOM-based XSS
         function escapeHTML(str) {
-            return str.replace(/[&<>"'`\/]/g, function(m) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"'`\/]/g, function(m) {
                 switch (m) {
                     case '&': return '&amp;';
                     case '<': return '&lt;';

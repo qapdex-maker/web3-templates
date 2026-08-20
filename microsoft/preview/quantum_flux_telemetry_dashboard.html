@@ -357,20 +357,38 @@
             }
         }
 
+        // Secure escapeHTML utility to prevent DOM-based XSS
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"'`\/]/g, function(m) {
+                switch (m) {
+                    case '&': return '&amp;';
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '"': return '&quot;';
+                    case "'": return '&#039;';
+                    case '`': return '&#x60;';
+                    case '/': return '&#x2F;';
+                    default: return m;
+                }
+            });
+        }
+
         // Micro-interaction for terminal scrolling simulation
         const terminal = document.querySelector('.terminal-scroll');
         const logs = [
-            "[09:24:15] <span class='text-on-surface'>DATA</span> Particle event detected in sector 7G.",
-            "[09:24:20] <span class='text-secondary'>SYNC</span> Delta correction applied: +0.002.",
-            "[09:24:25] <span class='text-primary'>INFO</span> Background radiation levels nominal.",
-            "[09:24:32] <span class='text-secondary-container'>STABLE</span> Re-calculating entanglement density..."
+            { time: "09:24:15", tag: "DATA", tagClass: "text-on-surface", text: "Particle event detected in sector 7G." },
+            { time: "09:24:20", tag: "SYNC", tagClass: "text-secondary", text: "Delta correction applied: +0.002." },
+            { time: "09:24:25", tag: "INFO", tagClass: "text-primary", text: "Background radiation levels nominal." },
+            { time: "09:24:32", tag: "STABLE", tagClass: "text-secondary-container", text: "Re-calculating entanglement density..." }
         ];
         
         let logIndex = 0;
         setInterval(() => {
             const p = document.createElement('p');
             p.className = 'text-outline-variant';
-            p.innerHTML = logs[logIndex % logs.length];
+            const log = logs[logIndex % logs.length];
+            p.innerHTML = `[${escapeHTML(log.time)}] <span class='${escapeHTML(log.tagClass)}'>${escapeHTML(log.tag)}</span> ${escapeHTML(log.text)}`;
             terminal.appendChild(p);
             terminal.scrollTop = terminal.scrollHeight;
             logIndex++;

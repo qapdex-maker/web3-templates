@@ -368,10 +368,15 @@
         
         let logIndex = 0;
         setInterval(() => {
+            if (!terminal) return;
             const p = document.createElement('p');
             p.className = 'text-outline-variant';
             p.innerHTML = logs[logIndex % logs.length];
             terminal.appendChild(p);
+            // Cap terminal logs at 50 nodes to prevent DOM node accumulation and memory exhaustion
+            if (terminal.children.length > 50) {
+                terminal.removeChild(terminal.firstElementChild);
+            }
             terminal.scrollTop = terminal.scrollHeight;
             logIndex++;
         }, 5000);

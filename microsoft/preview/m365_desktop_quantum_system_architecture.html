@@ -400,7 +400,7 @@
 <script>
         // Secure escapeHTML utility to prevent DOM-based XSS
         function escapeHTML(str) {
-            if (!str) return '';
+            if (str === null || str === undefined) return '';
             return String(str).replace(/[&<>"'`\/]/g, function(m) {
                 switch (m) {
                     case '&': return '&amp;';

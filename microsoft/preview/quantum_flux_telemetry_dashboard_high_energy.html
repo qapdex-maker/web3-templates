@@ -387,7 +387,7 @@
 <script>
         // Secure escapeHTML utility to prevent DOM-based XSS
         function escapeHTML(str) {
-            if (!str) return '';
+            if (str === null || str === undefined) return '';
             return String(str).replace(/[&<>"'`\/]/g, function(m) {
                 switch (m) {
                     case '&': return '&amp;';
@@ -421,6 +421,7 @@
         ];
 
         function addLogLine() {
+            if (!logTerminal) return;
             const time = new Date().toISOString().split('T')[1].split('Z')[0];
             const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
             const msg = messages[Math.floor(Math.random() * messages.length)];
